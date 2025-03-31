@@ -46,11 +46,11 @@ class Article {
 
 class DiaryEntry {
   String category;
-  List<String> articles;
+  List<Article> articles;
 
   DiaryEntry({required this.category, required this.articles});
 
-  DiaryEntry copyWith({String? category, List<String>? articles}) {
+  DiaryEntry copyWith({String? category, List<Article>? articles}) {
     return DiaryEntry(
       category: category ?? this.category,
       articles: articles ?? this.articles,
@@ -64,7 +64,11 @@ class DiaryEntry {
   factory DiaryEntry.fromMap(Map<String, dynamic> map) {
     return DiaryEntry(
       category: map['category'] as String,
-      articles: List<String>.from(map['articles'] as List<dynamic>),
+      articles: List<Article>.from(
+        (map['articles'] as List<dynamic>).map<Article>(
+          (x) => Article.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 

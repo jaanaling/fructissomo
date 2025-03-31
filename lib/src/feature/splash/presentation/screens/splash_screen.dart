@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:fructissimo/src/core/utils/app_icon.dart';
 import 'package:fructissimo/src/core/utils/size_utils.dart';
-import 'package:fructissimo/ui_kit/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,28 +49,17 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         Positioned(
-          right: isIpad(context)? null:-122,
+          right: isIpad(context) ? null : -122,
           bottom: getHeight(context, baseSize: 90),
           child: AppIcon(
-            asset: IconProvider.splash.buildImageUrl(),
+            asset: IconProvider.logo.buildImageUrl(),
             width: 465,
             fit: BoxFit.fitWidth,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppIcon(
-                asset: IconProvider.logo.buildImageUrl(),
-                width: 326,
-                fit: BoxFit.fitWidth,
-              ),
-              FourRotatingDots(color: Colors.black, size: 80)
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 50),
+            child: CupertinoActivityIndicator(color: Colors.white)),
       ],
     );
   }

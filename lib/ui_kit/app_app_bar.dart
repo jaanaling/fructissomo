@@ -1,4 +1,3 @@
-
 import 'package:fructissimo/src/core/utils/app_icon.dart';
 import 'package:fructissimo/src/core/utils/icon_provider.dart';
 import 'package:fructissimo/src/core/utils/size_utils.dart';
@@ -23,9 +22,19 @@ class AppAppBar extends StatelessWidget {
           children: [
             AnimatedButton(
                 onPressed: () => context.pop(),
-                child: AppIcon(asset: IconProvider.back.buildImageUrl(), height: 60, width: 60,)),
+                child: AppIcon(
+                  asset: IconProvider.arrow.buildImageUrl(),
+                  height: 60,
+                  width: 60,
+                )),
             Spacer(),
-            Expanded(flex: 5, child: TextWithBorder(title!, fontSize: 31,)),
+            if (title != null)
+              Expanded(
+                  flex: 5,
+                  child: TextWithBorder(
+                    title!,
+                    fontSize: 31,
+                  )),
             Spacer(flex: 2),
           ],
         ),
