@@ -1,13 +1,11 @@
 enum RouteValue {
   splash(path: '/'),
   home(path: '/home'),
-  base(path: 'base'),
-  shop(path: 'shop'),
-  storage(path: 'storage'),
-  recommendation(path: 'recommendation'),
-  recipe(path: 'recipe'),
-  create(path: 'create'),
-  description(path: "description"),
+  diary(path: 'diary'),
+  articles(path: 'articles'),
+  article(path: 'article'),
+  edit(path: 'edit'),
+  statistic(path: 'statistic'),
 
   unknown(path: '');
 

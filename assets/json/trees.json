@@ -1,0 +1,315 @@
+[
+    {
+      "id": "1",
+      "type": "Apple",
+      "subtypes": [
+        { "subtype": "Gala", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Fuji", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Granny Smith", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Honeycrisp", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Red Delicious", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Golden Delicious", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "2",
+      "type": "Pear",
+      "subtypes": [
+        { "subtype": "Bartlett", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Bosc", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Anjou", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Comice", "watering": 5, "typeWatering": "High" },
+        { "subtype": "Forelle", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Seckel", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "3",
+      "type": "Cherry",
+      "subtypes": [
+        { "subtype": "Bing", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Rainier", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Black Tartarian", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Montmorency", "watering": 5, "typeWatering": "High" },
+        { "subtype": "Morello", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Sweetheart", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "4",
+      "type": "Peach",
+      "subtypes": [
+        { "subtype": "Elberta", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Redhaven", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Cresthaven", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Donut", "watering": 5, "typeWatering": "High" },
+        { "subtype": "White Peach", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Saturn", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "5",
+      "type": "Plum",
+      "subtypes": [
+        { "subtype": "Santa Rosa", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Damson", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Greengage", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Satsuma", "watering": 5, "typeWatering": "High" },
+        { "subtype": "Mirabelle", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Elephant Heart", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "6",
+      "type": "Apricot",
+      "subtypes": [
+        { "subtype": "Moorpark", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Tilton", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Goldcot", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Blenheim", "watering": 5, "typeWatering": "High" },
+        { "subtype": "Royal", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Harcot", "watering": 3, "typeWatering": "Moderate" }
+      ]
+    },
+    {
+      "id": "7",
+      "type": "Mango",
+      "subtypes": [
+        { "subtype": "Alphonso", "watering": 4, "typeWatering": "Regular" },
+        { "subtype": "Kent", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Haden", "watering": 5, "typeWatering": "High" },
+        { "subtype": "Keitt", "watering": 3, "typeWatering": "Moderate" },
+        { "subtype": "Tommy Atkins", "watering": 2, "typeWatering": "Low" },
+        { "subtype": "Palmer", "watering": 4, "typeWatering": "Regular" }
+      ]
+    }, {
+        "id": "8",
+        "type": "Orange",
+        "subtypes": [
+          { "subtype": "Navel", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Valencia", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Blood Orange", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Mandarin", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Cara Cara", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Seville", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "9",
+        "type": "Lemon",
+        "subtypes": [
+          { "subtype": "Eureka", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Meyer", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Lisbon", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Ponderosa", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Femminello", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Verna", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "10",
+        "type": "Fig",
+        "subtypes": [
+          { "subtype": "Black Mission", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Brown Turkey", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Kadota", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Adriatic", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Celeste", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Panache", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "11",
+        "type": "Pomegranate",
+        "subtypes": [
+          { "subtype": "Wonderful", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Angel Red", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Parfianka", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Eversweet", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Granada", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Ariana", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "12",
+        "type": "Olive",
+        "subtypes": [
+          { "subtype": "Arbequina", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Manzanilla", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Kalamata", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Frantoio", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Leccino", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Mission", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "13",
+        "type": "Persimmon",
+        "subtypes": [
+          { "subtype": "Fuyu", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Hachiya", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Saijo", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Tamopan", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Chocolate", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Maru", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "14",
+        "type": "Banana",
+        "subtypes": [
+          { "subtype": "Cavendish", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Red Banana", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Manzano", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Burro", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Plantain", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Blue Java", "watering": 4, "typeWatering": "Regular" }
+        ]
+      },  {
+        "id": "15",
+        "type": "Grapefruit",
+        "subtypes": [
+          { "subtype": "Ruby Red", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "White", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Pink", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Oro Blanco", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Duncan", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Star Ruby", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "16",
+        "type": "Papaya",
+        "subtypes": [
+          { "subtype": "Maradol", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Red Lady", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Solo", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Sunrise", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Tainung", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Waimanalo", "watering": 4, "typeWatering": "Regular" }
+        ]
+      },
+      {
+        "id": "17",
+        "type": "Guava",
+        "subtypes": [
+          { "subtype": "Pink", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "White", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Red Malaysian", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Tropical Yellow", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Strawberry Guava", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Lemon Guava", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "18",
+        "type": "Avocado",
+        "subtypes": [
+          { "subtype": "Hass", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Fuerte", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Bacon", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Reed", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Zutano", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Pinkerton", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "19",
+        "type": "Coconut",
+        "subtypes": [
+          { "subtype": "Dwarf", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Tall", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "King", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Maypan", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Fiji Dwarf", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Malayan", "watering": 4, "typeWatering": "Regular" }
+        ]
+      },
+      {
+        "id": "20",
+        "type": "Starfruit",
+        "subtypes": [
+          { "subtype": "Arkin", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Kari", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Fwang Tung", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Dah Pon", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Golden Star", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "B10", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "21",
+        "type": "Jackfruit",
+        "subtypes": [
+          { "subtype": "Black Gold", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Cheena", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Dang Rasimi", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Golden Nugget", "watering": 5, "typeWatering": "High" },
+          { "subtype": "NS1", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "J33", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "22",
+        "type": "Date Palm",
+        "subtypes": [
+          { "subtype": "Medjool", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Deglet Noor", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Barhi", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Zahidi", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Halawy", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Khadrawy", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+   
+   
+      {
+        "id": "26",
+        "type": "Mulberry",
+        "subtypes": [
+          { "subtype": "Red", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "White", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Black", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Pakistan", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Dwarf Everbearing", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Shangri La", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+  
+      {
+        "id": "28",
+        "type": "Pineapple",
+        "subtypes": [
+          { "subtype": "Smooth Cayenne", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Red Spanish", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Queen", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Sugarloaf", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Pernambuco", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Montufar", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "29",
+        "type": "Passionfruit",
+        "subtypes": [
+          { "subtype": "Purple", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Yellow", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Sweet Granadilla", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Giant Granadilla", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Banana Passionfruit", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Kahuna", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      },
+      {
+        "id": "30",
+        "type": "Lychee",
+        "subtypes": [
+          { "subtype": "Brewster", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Mauritius", "watering": 4, "typeWatering": "Regular" },
+          { "subtype": "Hak Ip", "watering": 3, "typeWatering": "Moderate" },
+          { "subtype": "Sweetheart", "watering": 5, "typeWatering": "High" },
+          { "subtype": "Emperor", "watering": 2, "typeWatering": "Low" },
+          { "subtype": "Kaimana", "watering": 3, "typeWatering": "Moderate" }
+        ]
+      }
+  ]

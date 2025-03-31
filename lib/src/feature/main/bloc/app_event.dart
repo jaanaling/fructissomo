@@ -13,93 +13,78 @@ class UserLoadData extends UserEvent {
   List<Object?> get props => [];
 }
 
-class UserToggleFavoriteData extends UserEvent {
-  final int id;
-
-  const UserToggleFavoriteData({required this.id});
-  @override
-  List<Object?> get props => [id];
-}
-
-class UserSaveShoppingData extends UserEvent {
-  final Ingredient ingredient;
-
-  const UserSaveShoppingData({required this.ingredient});
-  @override
-  List<Object?> get props => [ingredient];
-}
-
-class UserClearShoppingData extends UserEvent {
-  const UserClearShoppingData();
-  @override
-  List<Object?> get props => [];
-}
-
-class UserUpdateShoppingData extends UserEvent {
-  final String id;
-  final Ingredient shopping;
-
-  const UserUpdateShoppingData({required this.shopping, required this.id});
-  @override
-  List<Object?> get props => [shopping, id];
-}
-
-class UserDeleteShoppingData extends UserEvent {
-  final String id;
-
-  const UserDeleteShoppingData({required this.id});
-  @override
-  List<Object?> get props => [id];
-}
-
-class UserSaveStorageData extends UserEvent {
-  final Ingredient ingredient;
-
-  const UserSaveStorageData({required this.ingredient});
-  @override
-  List<Object?> get props => [ingredient];
-}
-
-class UserUpdateStorageData extends UserEvent {
-  final String id;
-  final Ingredient storage;
-
-  const UserUpdateStorageData({required this.storage, required this.id});
-  @override
-  List<Object?> get props => [storage, id];
-}
-
-class UserDeleteStorageData extends UserEvent {
-  final String id;
-
-  const UserDeleteStorageData({required this.id});
-  @override
-  List<Object?> get props => [id];
-}
-
 class UserUpdateData extends UserEvent {
-  
-  final String? name;
-  final String? breed;
-  final int? age; // Возраст в годах
-  final String? gender;
-  final double? weight; // Вес в кг
-  final int? activity; // Условный уровень активности (1..5)
-  final List<String>? alergens;
-  final String? image;
+  final String id;
+  final String type;
+  final String subtype;
+  final double height;
+  final double diameter;
+  final double moisture;
+  final double acidity;
+  final String protection;
+  final Fertilizer fertilizer;
+  final String soil;
+  final String sunlight;
+  final String foliage;
+  final double health;
+  final double productivity;
+  final double growthStage;
+  final bool isCheckWater;
+  final bool isCheckProductivity;
+  final bool isCheckProtect;
+  final bool isCheckFertilize;
+  final bool isCheckTemperature;
+  final bool isPest;
+  final List<Pest> pests;
 
   const UserUpdateData({
-    this.name,
-    this.breed,
-    this.age,
-    this.gender,
-    this.weight,
-    this.activity,
-    this.alergens,
-    this.image,
+    required this.id,
+    required this.type,
+    required this.subtype,
+    required this.height,
+    required this.diameter,
+    required this.moisture,
+    required this.acidity,
+    required this.protection,
+    required this.fertilizer,
+    required this.soil,
+    required this.sunlight,
+    required this.foliage,
+    required this.health,
+    required this.productivity,
+    required this.growthStage,
+    required this.isCheckWater,
+    required this.isCheckProductivity,
+    required this.isCheckProtect,
+    required this.isCheckFertilize,
+    required this.isCheckTemperature,
+    required this.isPest,
+    required this.pests,
   });
 
   @override
-  List<Object?> get props =>
-      [name, breed, age, gender, weight, activity, alergens, image];
+  List<Object?> get props => [
+        id,
+        type,
+        subtype,
+        height,
+        diameter,
+        moisture,
+        acidity,
+        protection,
+        fertilizer,
+        soil,
+        sunlight,
+        foliage,
+        health,
+        productivity,
+        growthStage,
+        isCheckWater,
+        isCheckProductivity,
+        isCheckProtect,
+        isCheckFertilize,
+        isCheckTemperature,
+        isPest,
+        pests,
+      ];
 }

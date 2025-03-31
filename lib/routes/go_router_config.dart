@@ -1,17 +1,11 @@
-import 'package:fructissimo/src/feature/main/model/recipe.dart';
-import 'package:fructissimo/src/feature/main/presentation/create_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/data_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/description_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/recipe_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/recomendation_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/shopping_screen.dart';
-import 'package:fructissimo/src/feature/main/presentation/storage_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:fructissimo/src/feature/main/presentation/article_screen.dart';
+import 'package:fructissimo/src/feature/main/presentation/articles_screen.dart';
+import 'package:fructissimo/src/feature/main/presentation/diary_screen.dart';
+import 'package:fructissimo/src/feature/main/presentation/edit_screen.dart';
+import 'package:fructissimo/src/feature/main/presentation/profile_screen.dart';
+import 'package:fructissimo/src/feature/main/presentation/statistic_screen.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:fructissimo/src/feature/main/presentation/main_screen.dart';
-
 import '../src/feature/splash/presentation/screens/splash_screen.dart';
 import 'root_navigation_screen.dart';
 import 'route_value.dart';
@@ -36,54 +30,45 @@ GoRouter buildGoRouter = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: RouteValue.home.path,
-              builder: (context, state) => MainScreen(key: UniqueKey()),
+              builder: (context, state) => ProfileScreen(key: UniqueKey()),
               routes: [
                 GoRoute(
-                  path: RouteValue.recipe.path,
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child:
-                        RecipeScreen(key: UniqueKey(), id: state.extra as int),
-                  ),
-                ),
-                GoRoute(
-                  path: RouteValue.recommendation.path,
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: RecomendationScreen(key: UniqueKey()),
-                  ),
-                ),
-                GoRoute(
-                  path: RouteValue.shop.path,
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: ShoppingScreen(key: UniqueKey()),
-                  ),
-                ),
-                GoRoute(
-                  path: RouteValue.storage.path,
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: StorageScreen(key: UniqueKey()),
-                  ),
-                ),
-                GoRoute(
-                  path: RouteValue.create.path,
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: CreateScreen(key: UniqueKey()),
-                  ),
-                ),
-                GoRoute(
-                  path: RouteValue.base.path,
-                  pageBuilder: (context, state) =>
-                      NoTransitionPage(child: DataScreen(key: UniqueKey())),
-                  routes: [
-                    GoRoute(
-                      path: RouteValue.description.path,
-                      pageBuilder: (context, state) => NoTransitionPage(
-                        child: DescriptionScreen(
-                          key: UniqueKey(),
-                          id: state.extra as int,
+                    path: RouteValue.diary.path,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                          child: DiaryScreen(key: UniqueKey()),
                         ),
-                      ),
-                    ),
-                  ],
+                    routes: [
+                      GoRoute(
+                          path: RouteValue.articles.path,
+                          pageBuilder: (context, state) => NoTransitionPage(
+                                child: ArticlesScreen(
+                                  key: UniqueKey(),
+                                  id: state.extra as String,
+                                ),
+                              ),
+                          routes: [
+                            GoRoute(
+                              path: RouteValue.article.path,
+                              pageBuilder: (context, state) => NoTransitionPage(
+                                child: ArticleScreen(
+                                  key: UniqueKey(),
+                                  id: state.extra as String,
+                                ),
+                              ),
+                            ),
+                          ]),
+                    ]),
+                GoRoute(
+                  path: RouteValue.edit.path,
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: EditScreen(key: UniqueKey(),     id: state.extra as String?,),
+                  ),
+                ),
+                GoRoute(
+                  path: RouteValue.statistic.path,
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: StatisticScreen(key: UniqueKey()),
+                  ),
                 ),
               ],
             ),

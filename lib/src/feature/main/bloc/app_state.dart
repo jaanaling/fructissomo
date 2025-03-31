@@ -15,35 +15,27 @@ class UserLoading extends UserState {
 
 /// Состояние, когда данные загружены
 class UserLoaded extends UserState {
-  final Dog dog;
-  final List<Tips> tips;
-  final List<Food> food;
-  final List<Recipe> recipe;
+  final List<TreeProfile> trees;
+  final List<DiaryEntry> article;
 
   const UserLoaded({
-    required this.dog,
-    required this.tips,
-    required this.recipe,
-    required this.food,
+    required this.trees,
+    required this.article,
   });
 
   // Метод copyWith для удобства
   UserLoaded copyWith({
-    Dog? dog,
-    List<Tips>? tips,
-    List<Food>? food,
-    List<Recipe>? recipe,
+    List<TreeProfile>? trees,
+    List<DiaryEntry>? article,
   }) {
     return UserLoaded(
-      dog: dog ?? this.dog,
-      tips: tips ?? this.tips,
-      food: food ?? this.food,
-      recipe: recipe ?? this.recipe,
+      trees: trees ?? this.trees,
+      article: article ?? this.article,
     );
   }
 
   @override
-  List<Object?> get props => [dog, tips, food, recipe];
+  List<Object?> get props => [trees, article];
 }
 
 /// Состояние ошибки
