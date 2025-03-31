@@ -26,7 +26,7 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AppButton(style: ButtonColors.green, text: ""),
+        AppButton(style: ButtonColors.green, text: '',),
         Expanded(
           flex: flex,
           child: SizedBox(
