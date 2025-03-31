@@ -41,8 +41,11 @@ flutter:
   fonts:
       - family: Font
         fonts:
-          - asset: assets/fonts/PaytoneOne-Regular.ttf
-            weight: 500
+          - asset: assets/fonts/CherryBombOne-Regular.ttf
+      - family: CHIBOLD
+        fonts:
+          - asset: assets/fonts/CHIBOLD demo.ttf
+
 
 
 

@@ -18,7 +18,7 @@ class AppRoot extends StatelessWidget {
           brightness: Brightness.light,
           textTheme: CupertinoTextThemeData(
             textStyle: TextStyle(
-              color: Colors.white,
+              color: Color(0xFF280035),
               fontSize: 24,
               fontFamily: 'Font',
               fontWeight: FontWeight.w500,
