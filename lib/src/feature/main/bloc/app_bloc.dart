@@ -17,9 +17,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc() : super(const UserLoading()) {
     on<UserLoadData>(_onUserLoadData);
-    on<UserUpdateData>(_onUserUpdateData);
-
-
+    on<UserAddData>(_onUserAddData);
+    on<UserUpdateTree>(_onUserUpdateTree);
   }
 
   Future<void> _onUserLoadData(
@@ -31,8 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Репозиторий возвращает список пользователей; берём первого или init
       final trees = await userRepository.loadProfile();
       final article = await userRepository.loadArticle();
- 
-    
+
       emit(
         UserLoaded(
           trees: trees,
@@ -44,36 +42,33 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  Future<void> _onUserUpdateData(
-    UserUpdateData event,
+
+  Future<void> _onUserAddData(
+    UserAddData event,
     Emitter<UserState> emit,
   ) async {
     try {
-      final updatedTree = (state as UserLoaded).trees.first.copyWith(
-            id: event.id,
-            type: event.type,
-            subtype: event.subtype,
-            height: event.height,
-            diameter: event.diameter,
-            moisture: event.moisture,
-            acidity: event.acidity,
-            protection: event.protection,
-            fertilizer: event.fertilizer,
-            soil: event.soil,
-            sunlight: event.sunlight,
-            foliage: event.foliage,
-            health: event.health,
-            productivity: event.productivity,
-            growthStage: event.growthStage,
-            isCheckWater: event.isCheckWater,
-            isCheckProductivity: event.isCheckProductivity,
-            isCheckProtect: event.isCheckProtect,
-            isCheckFertilize: event.isCheckFertilize,
-            isCheckTemperature: event.isCheckTemperature,
-            isPest: event.isPest,
-            pests: event.pests,
-          );
-      await userRepository.update(updatedTree);
+
+      await userRepository.save(event.newTree);
+      final trees = await userRepository.loadProfile();
+      final article = await userRepository.loadArticle();
+      emit(
+        UserLoaded(
+          trees: trees,
+          article: article,
+        ),
+      );
+    } catch (e) {
+      emit(UserError('Произошла ошибка при добавлении: $e'));
+    }
+  }
+
+  Future<void> _onUserUpdateTree(
+    UserUpdateTree event,
+    Emitter<UserState> emit,
+  ) async {
+    try {
+      await userRepository.update(event.tree);
       final trees = await userRepository.loadProfile();
       final article = await userRepository.loadArticle();
       emit(
@@ -86,8 +81,5 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserError('Произошла ошибка при обновлении: $e'));
     }
   }
+  
 }
-
-    
-
-   
