@@ -38,6 +38,7 @@ class ArticlesScreen extends StatelessWidget {
                     final article = articles.articles[index];
                     return AppButton(
                       style: ButtonColors.green,
+                      textColor: const Color(0xFF004B19),
                       text: article.title,
                       onPressed: () => context.push(
                           '${RouteValue.home.path}/${RouteValue.diary.path}/${RouteValue.articles.path}/${RouteValue.article.path}',

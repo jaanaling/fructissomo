@@ -1,13 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fructissimo/src/core/utils/animated_button.dart';
+import 'package:fructissimo/src/core/utils/app_icon.dart';
+import 'package:fructissimo/src/core/utils/cupertino_snack_bar.dart';
+import 'package:fructissimo/src/core/utils/icon_provider.dart';
 import 'package:fructissimo/src/feature/main/bloc/app_bloc.dart';
 import 'package:fructissimo/src/feature/main/model/fertilizer.dart';
 import 'package:fructissimo/src/feature/main/model/pest.dart';
 import 'package:fructissimo/src/feature/main/model/tree.dart';
 import 'package:fructissimo/ui_kit/app_app_bar.dart';
 import 'package:fructissimo/ui_kit/app_button.dart';
+import 'package:fructissimo/ui_kit/app_text_field.dart';
+import 'package:fructissimo/ui_kit/back_container.dart';
 import 'package:gap/gap.dart';
-
+import 'package:go_router/go_router.dart';
 
 class EditScreen extends StatefulWidget {
   final String? id;
@@ -18,24 +25,37 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
+  final List<Color> leafColors = List.generate(
+    100,
+    (index) => HSVColor.fromAHSV(
+      1.0,
+      120.0,
+      1.0 - (index / 100.0),
+      0.5 + (index / 200.0),
+    ).toColor(),
+  );
+
   bool isEdit = false;
   bool isPutData = false;
 
-  TextEditingController type = TextEditingController();
-  TextEditingController subtype = TextEditingController();
   TextEditingController height = TextEditingController();
   TextEditingController diameter = TextEditingController();
-  TextEditingController moisture = TextEditingController();
+  double? moisture;
   TextEditingController acidity = TextEditingController();
-  TextEditingController health = TextEditingController();
-  TextEditingController growthStage = TextEditingController();
-  TextEditingController protection = TextEditingController();
-  TextEditingController fertilizer = TextEditingController();
-  TextEditingController soil = TextEditingController();
-  TextEditingController sunlight = TextEditingController();
-  TextEditingController foliage = TextEditingController();
+  double? health;
+  double? growthStage;
+
+  String? type;
+  String? subtype;
+  String? protection;
+  String? fertilizer;
+  String? soil;
+  String? sunlight;
+  Color? foliage;
 
   List<Pest> pests = [];
+
+  String error = '';
 
   @override
   void initState() {
@@ -52,24 +72,31 @@ class _EditScreenState extends State<EditScreen> {
         if (state is! UserLoaded) {
           return const Placeholder();
         }
-        final trees = state.trees;
+        final treesTypes = state.treeTypes;
+
+        final treesSubtypes = treesTypes
+            .firstWhere(
+              (element) => element.type == type,
+            )
+            .subtypes;
+
         if (isEdit) {
           final currentTree =
-              trees.firstWhere((element) => element.id == widget.id);
+              state.trees.firstWhere((element) => element.id == widget.id);
           if (!isPutData) {
-            type.text = currentTree.type;
-            subtype.text = currentTree.subtype;
+            type = currentTree.type;
+            subtype = currentTree.subtype;
             height.text = currentTree.height.toString();
             diameter.text = currentTree.diameter.toString();
-            moisture.text = currentTree.moisture.toString();
+            moisture = currentTree.moisture;
             acidity.text = currentTree.acidity.toString();
-            health.text = currentTree.health.toString();
-            growthStage.text = currentTree.growthStage.toString();
-            protection.text = currentTree.protection;
-            fertilizer.text = currentTree.fertilizer.fertilizer;
-            soil.text = currentTree.soil;
-            sunlight.text = currentTree.sunlight;
-            foliage.text = currentTree.foliage;
+            health = currentTree.health;
+            growthStage = currentTree.growthStage;
+            protection = currentTree.protection;
+            fertilizer = currentTree.fertilizer.fertilizer;
+            soil = currentTree.soil;
+            sunlight = currentTree.sunlight;
+            foliage = currentTree.foliage;
             pests = currentTree.pests;
             isPutData = true;
           }
@@ -78,9 +105,276 @@ class _EditScreenState extends State<EditScreen> {
         return SingleChildScrollView(
           child: SafeArea(
             child: Column(
+              spacing: 7,
               children: [
                 AppAppBar(
-                  title: "Edit",
+                  title: isEdit ? 'Edit' : 'Create',
+                ),
+                const Gap(12),
+                if (!isEdit)
+                  AppButton(
+                    text: type ?? 'Type',
+                    style: ButtonColors.green,
+                    onPressed: () {
+                      addStatusPopup(
+                        context,
+                        treesTypes,
+                        (id) {
+                          setState(() {
+                            type = treesTypes[id].type;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                if (!isEdit)
+                  AppButton(
+                    text: subtype ?? 'Subtype',
+                    style: ButtonColors.green,
+                    onPressed: () {
+                      if (type == null) {
+                        showCupertinoSnackBar(context, 'Select type first');
+                        return;
+                      }
+                      addStatusPopup(
+                        context,
+                        treesSubtypes,
+                        (id) {
+                          setState(() {
+                            subtype = treesSubtypes[id].subtype;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                Row(
+                  children: [
+                    Text("Growth:"),
+                    const Gap(12),
+                    AppButton(
+                      text: growthStage?.toString() ?? '0',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        addPersentPopup(context, growthStage ?? 0, (id) {
+                          setState(() {
+                            growthStage = id.toDouble();
+                          });
+                        });
+                      },
+                    ),
+                    const Gap(12),
+                    Text("%"),
+                  ],
+                ),
+                TextFieldRow(
+                  controller: height,
+                  prefix: 'Height',
+                  postfix: 'ft',
+                ),
+                TextFieldRow(
+                  controller: diameter,
+                  prefix: 'Diameter',
+                  postfix: 'inch',
+                ),
+                Row(
+                  children: [
+                    AppIcon(asset: IconProvider.soil.buildImageUrl()),
+                    const Gap(4),
+                    Text("Soil:"),
+                    const Gap(12),
+                    AppButton(
+                      text: soil ?? 'Type',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        addStatusPopup(
+                          context,
+                          soils,
+                          (id) {
+                            setState(() {
+                              soil = soils[id];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("Humidity:"),
+                    const Gap(12),
+                    AppButton(
+                      text: moisture?.toString() ?? '0',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        addPersentPopup(context, moisture ?? 0, (id) {
+                          setState(() {
+                            moisture = id.toDouble();
+                          });
+                        });
+                      },
+                    ),
+                    const Gap(12),
+                    Text("%"),
+                  ],
+                ),
+                TextFieldRow(
+                  controller: acidity,
+                  prefix: 'Acidity',
+                  postfix: 'pH',
+                ),
+                Row(
+                  children: [
+                    AppIcon(asset: IconProvider.protected.buildImageUrl()),
+                    const Gap(4),
+                    Text("Protection:"),
+                    const Gap(12),
+                    AppButton(
+                      text: protection ?? 'Type',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        addStatusPopup(
+                          context,
+                          protections,
+                          (id) {
+                            setState(() {
+                              protection = protections[id];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    AppIcon(asset: IconProvider.freque.buildImageUrl()),
+                    const Gap(4),
+                    Text("Fertilizer:"),
+                    const Gap(12),
+                    AppButton(
+                      text: fertilizer ?? 'Type',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        addStatusPopup(
+                          context,
+                          fertilizers.map((e) => e.fertilizer).toList(),
+                          (id) {
+                            setState(() {
+                              fertilizer = fertilizers[id].fertilizer;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    if (isEdit)
+                      AnimatedButton(
+                        child: AppIcon(asset: IconProvider.bug.buildImageUrl()),
+                        onPressed: () {
+                          addBugPopup(context);
+                        },
+                      ),
+                    AnimatedButton(
+                      child: AppIcon(asset: sunlight ?? light.first),
+                      onPressed: () {
+                        setState(() {
+                          sunlight = light[
+                              light.indexOf(sunlight ?? light.first) +
+                                  1 % light.length];
+                        });
+                      },
+                    ),
+                    AnimatedButton(
+                      child: Row(
+                        children: [
+                          AppIcon(asset: IconProvider.list.buildImageUrl()),
+                          Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                              color: foliage ?? Colors.transparent,
+                              shape: BoxShape.circle,
+                              border: Border.all(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        addColorPopup(
+                          context,
+                          leafColors,
+                          (id) {
+                            setState(() {
+                              foliage = leafColors[id];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                    AnimatedButton(
+                      child: Row(
+                        children: [
+                          AppIcon(asset: IconProvider.heart.buildImageUrl()),
+                          Text("$health %"),
+                        ],
+                      ),
+                      onPressed: () {
+                        addPersentPopup(
+                          context,
+                          health ?? 0,
+                          (id) {
+                            setState(() {
+                              health = id.toDouble();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                if (error.isNotEmpty)
+                  Text(
+                    error,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                const Gap(12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (isEdit)
+                      AppButton(
+                        text: 'Delete',
+                        style: ButtonColors.red,
+                        onPressed: () {
+                          delete(
+                            state.trees.firstWhere(
+                              (element) => element.id == widget.id,
+                            ),
+                          );
+                        },
+                      ),
+                    const Gap(12),
+                    AppButton(
+                      text: 'Save',
+                      style: ButtonColors.green,
+                      onPressed: () {
+                        save(
+                          isEdit
+                              ? state.trees.firstWhere(
+                                  (element) => element.id == widget.id,
+                                )
+                              : null,
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -91,23 +385,454 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   void save(TreeProfile? tree) {
-    if (tree == null) return;
-    final newTree = tree.copyWith(
-      type: type.text,
-      subtype: subtype.text,
-      height: double.parse(height.text),
-      diameter: double.parse(diameter.text),
-      moisture: double.parse(moisture.text),
-      acidity: double.parse(acidity.text),
-      health: double.parse(health.text),
-      growthStage: double.parse(growthStage.text),
-      protection: protection.text,
-      fertilizer: Fertilizer(fertilizer: fertilizer.text, fertilization: 0),
-      soil: soil.text,
-      sunlight: sunlight.text,
-      foliage: foliage.text,
-      pests: pests,
+    if (type == null ||
+        subtype == null ||
+        height.text.isEmpty ||
+        diameter.text.isEmpty ||
+        moisture == null ||
+        acidity.text.isEmpty ||
+        health == null ||
+        growthStage == null ||
+        protection == null ||
+        fertilizer == null ||
+        soil == null ||
+        sunlight == null ||
+        foliage == null) {
+      setState(() {
+        error = 'Need fill all fields';
+      });
+      return;
+    }
+
+    if (tree != null) {
+      final newTree = tree.copyWith(
+        type: type,
+        subtype: subtype,
+        height: double.parse(height.text),
+        diameter: double.parse(diameter.text),
+        moisture: moisture,
+        acidity: double.parse(acidity.text),
+        health: health,
+        growthStage: growthStage,
+        protection: protection,
+        fertilizer: fertilizers
+            .firstWhere((element) => element.fertilizer == fertilizer),
+        soil: soil,
+        sunlight: sunlight,
+        foliage: foliage,
+        pests: pests,
+      );
+      context.read<UserBloc>().add(UserUpdateTree(newTree));
+      context.pop();
+    } else {
+      final newTree = TreeProfile(
+        id: UniqueKey().toString(),
+        type: type!,
+        subtype: subtype!,
+        height: double.parse(height.text),
+        diameter: double.parse(diameter.text),
+        moisture: moisture!,
+        acidity: double.parse(acidity.text),
+        health: health!,
+        growthStage: growthStage!,
+        protection: protection!,
+        fertilizer: fertilizers
+            .firstWhere((element) => element.fertilizer == fertilizer),
+        productivity: 0,
+        soil: soil!,
+        sunlight: sunlight!,
+        foliage: foliage!,
+        isCheckWater: false,
+        isCheckProductivity: false,
+        isCheckProtect: false,
+        isCheckFertilize: false,
+        isCheckTemperature: false,
+        isPest: false,
+        pests: pests,
+        wateringRecords: [],
+        fertilizationRecords: [],
+        protectionRecords: [],
+        pestRecords: [],
+        harvestRecords: [],
+        temperatureRecords: [],
+      );
+      context.read<UserBloc>().add(UserAddData(newTree));
+      context.pop();
+    }
+  }
+
+  void delete(TreeProfile tree) {
+    context.read<UserBloc>().add(UserDeleteTree(tree));
+    context.pop();
+  }
+
+  void addColorPopup(BuildContext context, List list, Function(int) submit) {
+    int selectedItem = 0;
+    Color selectedColor = foliage ?? leafColors[0];
+    void onSelectedItemChanged(int index) {
+      setState(() {
+        selectedItem = index;
+        selectedColor = leafColors[index];
+      });
+    }
+
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: false,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            child: StatefulBuilder(
+              builder: (context, StateSetter setState) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
+                child: BackContainer(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: selectedColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: GridView.builder(
+                          padding: EdgeInsets.all(10),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 10,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                          ),
+                          itemCount: leafColors.length,
+                          itemBuilder: (context, index) {
+                            return AnimatedButton(
+                              onPressed: () {
+                                onSelectedItemChanged(index);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: leafColors[index],
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: selectedColor == leafColors[index]
+                                        ? 3
+                                        : 1,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          AppButton(
+                            text: 'Cancel',
+                            style: ButtonColors.red,
+                            onPressed: () {
+                              context.pop();
+                            },
+                          ),
+                          AppButton(
+                            text: 'Save',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              submit(selectedItem);
+                              context.pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
-    context.read<UserBloc>().add(UserUpdateTree(newTree));
+  }
+
+  void addPersentPopup(
+    BuildContext context,
+    double value,
+    Function(int) submit,
+  ) {
+    int values = value.toInt();
+
+    void onSelectedItemChanged(double index) {
+      setState(() {
+        values = index.toInt();
+      });
+    }
+
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: false,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            child: StatefulBuilder(
+              builder: (context, StateSetter setState) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
+                child: BackContainer(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(values.toString(), style: TextStyle(fontSize: 50)),
+                      SizedBox(height: 20),
+                      Slider(
+                        value: value,
+                        max: 100,
+                        onChanged: onSelectedItemChanged,
+                      ),
+                      Row(
+                        children: [
+                          AppButton(
+                            text: 'Cancel',
+                            style: ButtonColors.red,
+                            onPressed: () {
+                              context.pop();
+                            },
+                          ),
+                          AppButton(
+                            text: 'Save',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              submit(values);
+                              context.pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void addBugPopup(
+    BuildContext context,
+  ) {
+    TextEditingController controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: false,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            child: StatefulBuilder(
+              builder: (context, StateSetter setState) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
+                child: BackContainer(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          AppTextField(controller: controller),
+                          AppButton(
+                            text: '+',
+                            style: ButtonColors.purple,
+                            onPressed: () {
+                              if (controller.text.isNotEmpty) {
+                                setState(() {
+                                  pests.add(
+                                    Pest(
+                                      id: UniqueKey().toString(),
+                                      name: controller.text,
+                                      date: DateTime.now(),
+                                      isKilled: false,
+                                    ),
+                                  );
+                                  controller.clear();
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: pests.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              children: [
+                                Text(pests[index].name),
+                                AppButton(
+                                  text: 'X',
+                                  style: ButtonColors.red,
+                                  onPressed: () {
+                                    setState(() {
+                                      pests.removeAt(index);
+                                    });
+                                  },
+                                ),
+                                const Gap(12),
+                                Text(
+                                  pests[index].date.toString(),
+                                ),
+                                AppButton(
+                                  style: pests[index].isKilled
+                                      ? ButtonColors.green
+                                      : ButtonColors.red,
+                                  text:
+                                      pests[index].isKilled ? 'Killed' : 'Kill',
+                                  onPressed: () {
+                                    setState(() {
+                                      pests[index].isKilled =
+                                          !pests[index].isKilled;
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      AppButton(
+                        text: 'OK',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          context.pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void addStatusPopup(BuildContext context, List list, Function(int) submit) {
+    int selectedItem = 0;
+    void onSelectedItemChanged(int index) {
+      setState(() {
+        selectedItem = index;
+      });
+    }
+
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: false,
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            child: StatefulBuilder(
+              builder: (context, StateSetter setState) => Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 1,
+                  ),
+                  BackContainer(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CupertinoPicker.builder(
+                          childCount: list.length,
+                          backgroundColor: Colors.transparent,
+                          scrollController: FixedExtentScrollController(
+                            initialItem: selectedItem,
+                          ),
+                          itemExtent: 35,
+                          onSelectedItemChanged: onSelectedItemChanged,
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: Text(
+                                list[index] as String,
+                              ),
+                            );
+                          },
+                        ),
+                        Row(
+                          children: [
+                            AppButton(
+                              text: 'Cancel',
+                              style: ButtonColors.red,
+                              onPressed: () {
+                                context.pop();
+                              },
+                            ),
+                            AppButton(
+                              text: 'Save',
+                              style: ButtonColors.green,
+                              onPressed: () {
+                                submit(selectedItem);
+                                context.pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TextFieldRow extends StatelessWidget {
+  final TextEditingController controller;
+  final String prefix;
+  final String postfix;
+
+  const TextFieldRow({
+    super.key,
+    required this.controller,
+    required this.prefix,
+    required this.postfix,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: 15,
+      children: [
+        Text(prefix),
+        AppTextField(controller: controller),
+        Text(postfix),
+      ],
+    );
   }
 }

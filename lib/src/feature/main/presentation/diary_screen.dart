@@ -35,7 +35,7 @@ class DiaryScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final article = articles[index];
                     return AppButton(
-                      style: ButtonColors.green,
+                      style: ButtonColors.green,   textColor: const Color(0xFF004B19),
                       text: article.category,
                       onPressed: () => context.push(
                           '${RouteValue.home.path}/${RouteValue.diary.path}/${RouteValue.articles.path}',

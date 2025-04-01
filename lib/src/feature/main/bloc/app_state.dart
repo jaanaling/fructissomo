@@ -17,25 +17,29 @@ class UserLoading extends UserState {
 class UserLoaded extends UserState {
   final List<TreeProfile> trees;
   final List<DiaryEntry> article;
+  final List<TreeType> treeTypes;
 
   const UserLoaded({
     required this.trees,
     required this.article,
+   required this.treeTypes,
   });
 
   // Метод copyWith для удобства
   UserLoaded copyWith({
     List<TreeProfile>? trees,
     List<DiaryEntry>? article,
+    List<TreeType>? treeTypes,
   }) {
     return UserLoaded(
       trees: trees ?? this.trees,
       article: article ?? this.article,
+      treeTypes: treeTypes ?? this.treeTypes,
     );
   }
 
   @override
-  List<Object?> get props => [trees, article];
+  List<Object?> get props => [trees, article, treeTypes];
 }
 
 /// Состояние ошибки

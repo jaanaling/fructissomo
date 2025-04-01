@@ -26,3 +26,12 @@ class UserUpdateTree extends UserEvent {
   @override
   List<Object?> get props => [tree];
 }
+
+class UserDeleteTree extends UserEvent {
+  final TreeProfile tree;
+  const UserDeleteTree(this.tree);
+  @override
+  List<Object?> get props => [tree];
+}
+
+

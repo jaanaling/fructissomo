@@ -80,3 +80,5 @@ List<Fertilizer> fertilizers = [
   Fertilizer(fertilizer: "Fulvic Acid", fertilization: 4),
   Fertilizer(fertilizer: "Vermicompost", fertilization: 3),
 ];
+
+

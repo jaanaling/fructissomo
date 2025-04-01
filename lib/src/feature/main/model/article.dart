@@ -58,7 +58,8 @@ class DiaryEntry {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{'category': category, 'articles': articles};
+    return <String, dynamic>{'category': category, 'articles': articles.map((x) => x.toMap()).toList()
+    };
   }
 
   factory DiaryEntry.fromMap(Map<String, dynamic> map) {

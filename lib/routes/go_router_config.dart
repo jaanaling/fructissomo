@@ -67,7 +67,7 @@ GoRouter buildGoRouter = GoRouter(
                 GoRoute(
                   path: RouteValue.statistic.path,
                   pageBuilder: (context, state) => NoTransitionPage(
-                    child: StatisticScreen(key: UniqueKey()),
+                    child: StatisticScreen(key: UniqueKey(), id: state.extra as String),
                   ),
                 ),
               ],

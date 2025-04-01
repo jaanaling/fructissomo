@@ -1,5 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+
+import 'package:fructissimo/src/core/utils/icon_provider.dart';
+
 import 'fertilizer.dart';
 import 'pest.dart';
 
@@ -127,7 +133,7 @@ class TreeProfile {
   Fertilizer fertilizer;
   String soil;
   String sunlight;
-  String foliage;
+  Color foliage;
   double health;
   double productivity;
   double growthStage;
@@ -138,6 +144,13 @@ class TreeProfile {
   bool isCheckTemperature;
   bool isPest;
   List<Pest> pests;
+
+  List<WateringRecord> wateringRecords;
+  List<FertilizationRecord> fertilizationRecords;
+  List<ProtectionRecord> protectionRecords;
+  List<PestRecord> pestRecords;
+  List<HarvestRecord> harvestRecords;
+  List<TemperatureRecord> temperatureRecords;
 
   TreeProfile({
     required this.id,
@@ -162,6 +175,12 @@ class TreeProfile {
     required this.isCheckTemperature,
     required this.isPest,
     required this.pests,
+    required this.wateringRecords,
+    required this.fertilizationRecords,
+    required this.protectionRecords,
+    required this.pestRecords,
+    required this.harvestRecords,
+    required this.temperatureRecords,
   });
 
   TreeProfile copyWith({
@@ -176,7 +195,7 @@ class TreeProfile {
     Fertilizer? fertilizer,
     String? soil,
     String? sunlight,
-    String? foliage,
+    Color? foliage,
     double? health,
     double? productivity,
     double? growthStage,
@@ -187,6 +206,12 @@ class TreeProfile {
     bool? isCheckTemperature,
     bool? isPest,
     List<Pest>? pests,
+    List<WateringRecord>? wateringRecords,
+    List<FertilizationRecord>? fertilizationRecords,
+    List<ProtectionRecord>? protectionRecords,
+    List<PestRecord>? pestRecords,
+    List<HarvestRecord>? harvestRecords,
+    List<TemperatureRecord>? temperatureRecords,
   }) {
     return TreeProfile(
       id: id ?? this.id,
@@ -211,6 +236,12 @@ class TreeProfile {
       isCheckTemperature: isCheckTemperature ?? this.isCheckTemperature,
       isPest: isPest ?? this.isPest,
       pests: pests ?? this.pests,
+      wateringRecords: wateringRecords ?? this.wateringRecords,
+      fertilizationRecords: fertilizationRecords ?? this.fertilizationRecords,
+      protectionRecords: protectionRecords ?? this.protectionRecords,
+      pestRecords: pestRecords ?? this.pestRecords,
+      harvestRecords: harvestRecords ?? this.harvestRecords,
+      temperatureRecords: temperatureRecords ?? this.temperatureRecords,
     );
   }
 
@@ -227,7 +258,7 @@ class TreeProfile {
       'fertilizer': fertilizer.toMap(),
       'soil': soil,
       'sunlight': sunlight,
-      'foliage': foliage,
+      'foliage': foliage.value,
       'health': health,
       'productivity': productivity,
       'growthStage': growthStage,
@@ -238,6 +269,13 @@ class TreeProfile {
       'isCheckTemperature': isCheckTemperature,
       'isPest': isPest,
       'pests': pests.map((x) => x.toMap()).toList(),
+      'wateringRecords': wateringRecords.map((x) => x.toMap()).toList(),
+      'fertilizationRecords':
+          fertilizationRecords.map((x) => x.toMap()).toList(),
+      'protectionRecords': protectionRecords.map((x) => x.toMap()).toList(),
+      'pestRecords': pestRecords.map((x) => x.toMap()).toList(),
+      'harvestRecords': harvestRecords.map((x) => x.toMap()).toList(),
+      'temperatureRecords': temperatureRecords.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -254,7 +292,7 @@ class TreeProfile {
       fertilizer: Fertilizer.fromMap(map['fertilizer'] as Map<String, dynamic>),
       soil: map['soil'] as String,
       sunlight: map['sunlight'] as String,
-      foliage: map['foliage'] as String,
+      foliage: Color(map['foliage'] as int),
       health: map['health'] as double,
       productivity: map['productivity'] as double,
       growthStage: map['growthStage'] as double,
@@ -269,6 +307,36 @@ class TreeProfile {
           (x) => Pest.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      wateringRecords: List<WateringRecord>.from(
+        (map['wateringRecords'] as List<dynamic>).map<WateringRecord>(
+          (x) => WateringRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      fertilizationRecords: List<FertilizationRecord>.from(
+        (map['fertilizationRecords'] as List<dynamic>).map<FertilizationRecord>(
+          (x) => FertilizationRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      protectionRecords: List<ProtectionRecord>.from(
+        (map['protectionRecords'] as List<dynamic>).map<ProtectionRecord>(
+          (x) => ProtectionRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      pestRecords: List<PestRecord>.from(
+        (map['pestRecords'] as List<dynamic>).map<PestRecord>(
+          (x) => PestRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      harvestRecords: List<HarvestRecord>.from(
+        (map['harvestRecords'] as List<dynamic>).map<HarvestRecord>(
+          (x) => HarvestRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      temperatureRecords: List<TemperatureRecord>.from(
+        (map['temperatureRecords'] as List<dynamic>).map<TemperatureRecord>(
+          (x) => TemperatureRecord.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
@@ -279,7 +347,7 @@ class TreeProfile {
 
   @override
   String toString() {
-    return 'TreeProfile(id: $id, type: $type, subtype: $subtype, height: $height, diameter: $diameter, moisture: $moisture, acidity: $acidity, protection: $protection, fertilizer: $fertilizer, soil: $soil, sunlight: $sunlight, foliage: $foliage, health: $health, productivity: $productivity, growthStage: $growthStage, isCheckWater: $isCheckWater, isCheckProductivity: $isCheckProductivity, isCheckProtect: $isCheckProtect, isCheckFertilize: $isCheckFertilize, isCheckTemperature: $isCheckTemperature, isPest: $isPest, pests: $pests)';
+    return 'TreeProfile(id: $id, type: $type, subtype: $subtype, height: $height, diameter: $diameter, moisture: $moisture, acidity: $acidity, protection: $protection, fertilizer: $fertilizer, soil: $soil, sunlight: $sunlight, foliage: $foliage, health: $health, productivity: $productivity, growthStage: $growthStage, isCheckWater: $isCheckWater, isCheckProductivity: $isCheckProductivity, isCheckProtect: $isCheckProtect, isCheckFertilize: $isCheckFertilize, isCheckTemperature: $isCheckTemperature, isPest: $isPest, pests: $pests, wateringRecords: $wateringRecords, fertilizationRecords: $fertilizationRecords, protectionRecords: $protectionRecords, pestRecords: $pestRecords, harvestRecords: $harvestRecords, temperatureRecords: $temperatureRecords)';
   }
 
   @override
@@ -307,7 +375,13 @@ class TreeProfile {
         other.isCheckFertilize == isCheckFertilize &&
         other.isCheckTemperature == isCheckTemperature &&
         other.isPest == isPest &&
-        other.pests == pests;
+        listEquals(other.pests, pests) &&
+        listEquals(other.wateringRecords, wateringRecords) &&
+        listEquals(other.fertilizationRecords, fertilizationRecords) &&
+        listEquals(other.protectionRecords, protectionRecords) &&
+        listEquals(other.pestRecords, pestRecords) &&
+        listEquals(other.harvestRecords, harvestRecords) &&
+        listEquals(other.temperatureRecords, temperatureRecords);
   }
 
   @override
@@ -333,11 +407,17 @@ class TreeProfile {
         isCheckFertilize.hashCode ^
         isCheckTemperature.hashCode ^
         isPest.hashCode ^
-        pests.hashCode;
+        pests.hashCode ^
+        wateringRecords.hashCode ^
+        fertilizationRecords.hashCode ^
+        protectionRecords.hashCode ^
+        pestRecords.hashCode ^
+        harvestRecords.hashCode ^
+        temperatureRecords.hashCode;
   }
 }
 
-List<String> protection = [
+List<String> protections = [
   "Insecticides",
   "Fungicides",
   "Herbicides",
@@ -370,7 +450,7 @@ List<String> protection = [
   "Trichoderma-Based Biofungicides",
 ];
 
-List<String> soil = [
+List<String> soils = [
   "Clay",
   "Loamy",
   "Sandy",
@@ -449,3 +529,326 @@ List<String> fertilizerUsesForTrees = [
   "Aid in Soil Structure Improvement",
   "Support Tree Recovery after Transplanting",
 ];
+
+List<String> light = [
+  IconProvider.sun.buildImageUrl(),
+  IconProvider.cloud.buildImageUrl(),
+  IconProvider.sunCloud.buildImageUrl(),
+];
+
+class WateringRecord {
+  DateTime date;
+  double amount;
+  WateringRecord({
+    required this.date,
+    required this.amount,
+  });
+
+  WateringRecord copyWith({
+    DateTime? date,
+    double? amount,
+  }) {
+    return WateringRecord(
+      date: date ?? this.date,
+      amount: amount ?? this.amount,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'amount': amount,
+    };
+  }
+
+  factory WateringRecord.fromMap(Map<String, dynamic> map) {
+    return WateringRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      amount: map['amount'] as double,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory WateringRecord.fromJson(String source) =>
+      WateringRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'WateringRecord(date: $date, amount: $amount)';
+
+  @override
+  bool operator ==(covariant WateringRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.amount == amount;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ amount.hashCode;
+}
+
+class FertilizationRecord {
+  DateTime date;
+  String fertilizerName;
+  double amount;
+  FertilizationRecord({
+    required this.date,
+    required this.fertilizerName,
+    required this.amount,
+  });
+
+  FertilizationRecord copyWith({
+    DateTime? date,
+    String? fertilizerName,
+    double? amount,
+  }) {
+    return FertilizationRecord(
+      date: date ?? this.date,
+      fertilizerName: fertilizerName ?? this.fertilizerName,
+      amount: amount ?? this.amount,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'fertilizerName': fertilizerName,
+      'amount': amount,
+    };
+  }
+
+  factory FertilizationRecord.fromMap(Map<String, dynamic> map) {
+    return FertilizationRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      fertilizerName: map['fertilizerName'] as String,
+      amount: map['amount'] as double,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory FertilizationRecord.fromJson(String source) =>
+      FertilizationRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() =>
+      'FertilizationRecord(date: $date, fertilizerName: $fertilizerName, amount: $amount)';
+
+  @override
+  bool operator ==(covariant FertilizationRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date &&
+        other.fertilizerName == fertilizerName &&
+        other.amount == amount;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ fertilizerName.hashCode ^ amount.hashCode;
+}
+
+class ProtectionRecord {
+  DateTime date;
+  String protectionName;
+  ProtectionRecord({
+    required this.date,
+    required this.protectionName,
+  });
+
+  ProtectionRecord copyWith({
+    DateTime? date,
+    String? protectionName,
+  }) {
+    return ProtectionRecord(
+      date: date ?? this.date,
+      protectionName: protectionName ?? this.protectionName,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'protectionName': protectionName,
+    };
+  }
+
+  factory ProtectionRecord.fromMap(Map<String, dynamic> map) {
+    return ProtectionRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      protectionName: map['protectionName'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ProtectionRecord.fromJson(String source) =>
+      ProtectionRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() =>
+      'ProtectionRecord(date: $date, protectionName: $protectionName)';
+
+  @override
+  bool operator ==(covariant ProtectionRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.protectionName == protectionName;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ protectionName.hashCode;
+}
+
+class PestRecord {
+  DateTime date;
+  String pestName;
+  PestRecord({
+    required this.date,
+    required this.pestName,
+  });
+
+  PestRecord copyWith({
+    DateTime? date,
+    String? pestName,
+  }) {
+    return PestRecord(
+      date: date ?? this.date,
+      pestName: pestName ?? this.pestName,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'pestName': pestName,
+    };
+  }
+
+  factory PestRecord.fromMap(Map<String, dynamic> map) {
+    return PestRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      pestName: map['pestName'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PestRecord.fromJson(String source) =>
+      PestRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'PestRecord(date: $date, pestName: $pestName)';
+
+  @override
+  bool operator ==(covariant PestRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.pestName == pestName;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ pestName.hashCode;
+}
+
+class HarvestRecord {
+  DateTime date;
+  double amount;
+  HarvestRecord({
+    required this.date,
+    required this.amount,
+  });
+
+  HarvestRecord copyWith({
+    DateTime? date,
+    double? amount,
+  }) {
+    return HarvestRecord(
+      date: date ?? this.date,
+      amount: amount ?? this.amount,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'amount': amount,
+    };
+  }
+
+  factory HarvestRecord.fromMap(Map<String, dynamic> map) {
+    return HarvestRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      amount: map['amount'] as double,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory HarvestRecord.fromJson(String source) =>
+      HarvestRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'HarvestRecord(date: $date, amount: $amount)';
+
+  @override
+  bool operator ==(covariant HarvestRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.amount == amount;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ amount.hashCode;
+}
+
+class TemperatureRecord {
+  DateTime date;
+  double temperature;
+  TemperatureRecord({
+    required this.date,
+    required this.temperature,
+  });
+
+  TemperatureRecord copyWith({
+    DateTime? date,
+    double? temperature,
+  }) {
+    return TemperatureRecord(
+      date: date ?? this.date,
+      temperature: temperature ?? this.temperature,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'date': date.millisecondsSinceEpoch,
+      'temperature': temperature,
+    };
+  }
+
+  factory TemperatureRecord.fromMap(Map<String, dynamic> map) {
+    return TemperatureRecord(
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      temperature: map['temperature'] as double,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory TemperatureRecord.fromJson(String source) =>
+      TemperatureRecord.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() =>
+      'TemperatureRecord(date: $date, temperature: $temperature)';
+
+  @override
+  bool operator ==(covariant TemperatureRecord other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.temperature == temperature;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ temperature.hashCode;
+}
