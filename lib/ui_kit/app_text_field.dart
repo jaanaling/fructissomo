@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
     return SizedBox(
       width: getWidth(context, percent: 0.2),
       child: Stack(
+        alignment: Alignment.center,
         children: [
           SizedBox(
               width: getWidth(context, percent: 0.2),

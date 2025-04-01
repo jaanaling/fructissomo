@@ -249,11 +249,40 @@ class _EditScreenState extends State<EditScreen> {
                             height: 100,
                           ),
                           const Gap(4),
-                          Text("Protection:"),
+                          Text("Protection:", style: TextStyle(fontSize: 20),),
                           const Gap(12),
                           AppButton(
                             text: protection ?? 'Type',
                             style: ButtonColors.green,
+                            padding: fertilizer != null
+                                ? EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 11)
+                                : EdgeInsets.symmetric(
+                                vertical: 11.34, horizontal: 24.59),
+                            child: protection != null
+                                ? SizedBox(
+                                    width: 115,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        protection!.replaceAll(' ', '\n'),
+                                        style: TextStyle(
+                                          fontFamily: 'Font',
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          shadows: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              offset: Offset(0, 1),
+                                              blurRadius: 3.1,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : null,
                             onPressed: () {
                               addStatusPopup(
                                 context,
@@ -276,10 +305,39 @@ class _EditScreenState extends State<EditScreen> {
                             height: 100,
                           ),
                           const Gap(4),
-                          Text("Fertilizer:"),
+                          Text("Fertilizer:", style: TextStyle(fontSize: 23),),
                           const Gap(12),
                           AppButton(
                             text: fertilizer ?? 'Type',
+                            padding: fertilizer != null
+                                ? EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 11)
+                                : EdgeInsets.symmetric(
+                                    vertical: 11.34, horizontal: 24.59),
+                            child: fertilizer != null
+                                ? SizedBox(
+                                    width: 105,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        fertilizer!.replaceAll(' ', '\n'),
+                                        style: TextStyle(
+                                          fontFamily: 'Font',
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          shadows: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              offset: Offset(0, 1),
+                                              blurRadius: 3.1,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : null,
                             style: ButtonColors.green,
                             onPressed: () {
                               addStatusPopup(
