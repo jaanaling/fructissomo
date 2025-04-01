@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fructissimo/src/core/utils/animated_button.dart';
 
-
 class AppButton extends StatelessWidget {
   final ButtonColors style;
   final VoidCallback? onPressed;
@@ -34,40 +33,41 @@ class AppButton extends StatelessWidget {
           color: Color(0xFF0C4407),
         ),
         child: Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: style.borderColor, width: 4),
-                gradient: LinearGradient(
-                  colors: style.gradientColors,
-                  stops: const [0.14, 0.83, 1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+          padding: const EdgeInsets.only(bottom: 2),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: style.borderColor, width: 4),
+              gradient: LinearGradient(
+                colors: style.gradientColors,
+                stops: const [0.14, 0.83, 1],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              child: Padding(
-                padding: padding,
-                child: child ??
-                    Text(
-                      text,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: fontSize,
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            offset: Offset(0, 1),
-                            blurRadius: 3.1,
-                          ),
-                        ],
-                      ),
+            ),
+            child: Padding(
+              padding: padding,
+              child: child ??
+                  Text(
+                    text,
+                    style: TextStyle(
+                      fontFamily: 'Font',
+                      color: textColor,
+                      fontSize: fontSize,
+                      shadows: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: Offset(0, 1),
+                          blurRadius: 3.1,
+                        ),
+                      ],
                     ),
-              ),
+                  ),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }
 

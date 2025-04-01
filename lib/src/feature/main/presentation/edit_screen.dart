@@ -29,9 +29,10 @@ class _EditScreenState extends State<EditScreen> {
     100,
     (index) => HSVColor.fromAHSV(
       1.0,
-      120.0,
-      1.0 - (index / 100.0),
-      0.5 + (index / 200.0),
+      120.0 -
+          (index * 1.2), // Плавный переход от 120° (зелёного) к 0° (красному)
+      1.0,
+      0.5,
     ).toColor(),
   );
 
@@ -73,12 +74,15 @@ class _EditScreenState extends State<EditScreen> {
           return const Placeholder();
         }
         final treesTypes = state.treeTypes;
+        List<TreeSubtype> treesSubtypes = [];
 
-        final treesSubtypes = treesTypes
-            .firstWhere(
-              (element) => element.type == type,
-            )
-            .subtypes;
+        if (type != null) {
+          treesSubtypes = treesTypes
+              .firstWhere(
+                (element) => element.type == type,
+              )
+              .subtypes;
+        }
 
         if (isEdit) {
           final currentTree =
@@ -104,279 +108,309 @@ class _EditScreenState extends State<EditScreen> {
 
         return SingleChildScrollView(
           child: SafeArea(
-            child: Column(
-              spacing: 7,
-              children: [
-                AppAppBar(
-                  title: isEdit ? 'Edit' : 'Create',
-                ),
-                const Gap(12),
-                if (!isEdit)
-                  AppButton(
-                    text: type ?? 'Type',
-                    style: ButtonColors.green,
-                    onPressed: () {
-                      addStatusPopup(
-                        context,
-                        treesTypes,
-                        (id) {
-                          setState(() {
-                            type = treesTypes[id].type;
-                          });
-                        },
-                      );
-                    },
+            child: BackContainer(
+              child: Column(
+                spacing: 7,
+                children: [
+                  AppAppBar(
+                    title: isEdit ? 'Edit' : 'Create',
                   ),
-                if (!isEdit)
-                  AppButton(
-                    text: subtype ?? 'Subtype',
-                    style: ButtonColors.green,
-                    onPressed: () {
-                      if (type == null) {
-                        showCupertinoSnackBar(context, 'Select type first');
-                        return;
-                      }
-                      addStatusPopup(
-                        context,
-                        treesSubtypes,
-                        (id) {
-                          setState(() {
-                            subtype = treesSubtypes[id].subtype;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                Row(
-                  children: [
-                    Text("Growth:"),
-                    const Gap(12),
+                  const Gap(12),
+                  if (!isEdit)
                     AppButton(
-                      text: growthStage?.toString() ?? '0',
-                      style: ButtonColors.green,
-                      onPressed: () {
-                        addPersentPopup(context, growthStage ?? 0, (id) {
-                          setState(() {
-                            growthStage = id.toDouble();
-                          });
-                        });
-                      },
-                    ),
-                    const Gap(12),
-                    Text("%"),
-                  ],
-                ),
-                TextFieldRow(
-                  controller: height,
-                  prefix: 'Height',
-                  postfix: 'ft',
-                ),
-                TextFieldRow(
-                  controller: diameter,
-                  prefix: 'Diameter',
-                  postfix: 'inch',
-                ),
-                Row(
-                  children: [
-                    AppIcon(asset: IconProvider.soil.buildImageUrl()),
-                    const Gap(4),
-                    Text("Soil:"),
-                    const Gap(12),
-                    AppButton(
-                      text: soil ?? 'Type',
+                      text: type ?? 'Type',
                       style: ButtonColors.green,
                       onPressed: () {
                         addStatusPopup(
                           context,
-                          soils,
+                          treesTypes,
                           (id) {
                             setState(() {
-                              soil = soils[id];
+                              type = treesTypes[id].type;
                             });
                           },
                         );
                       },
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("Humidity:"),
-                    const Gap(12),
+                  if (!isEdit)
                     AppButton(
-                      text: moisture?.toString() ?? '0',
+                      text: subtype ?? 'Subtype',
                       style: ButtonColors.green,
                       onPressed: () {
-                        addPersentPopup(context, moisture ?? 0, (id) {
-                          setState(() {
-                            moisture = id.toDouble();
-                          });
-                        });
-                      },
-                    ),
-                    const Gap(12),
-                    Text("%"),
-                  ],
-                ),
-                TextFieldRow(
-                  controller: acidity,
-                  prefix: 'Acidity',
-                  postfix: 'pH',
-                ),
-                Row(
-                  children: [
-                    AppIcon(asset: IconProvider.protected.buildImageUrl()),
-                    const Gap(4),
-                    Text("Protection:"),
-                    const Gap(12),
-                    AppButton(
-                      text: protection ?? 'Type',
-                      style: ButtonColors.green,
-                      onPressed: () {
+                        if (type == null) {
+                          showCupertinoSnackBar(context, 'Select type first');
+                          return;
+                        }
                         addStatusPopup(
                           context,
-                          protections,
+                          treesSubtypes,
                           (id) {
                             setState(() {
-                              protection = protections[id];
+                              subtype = treesSubtypes[id].subtype;
                             });
                           },
                         );
                       },
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    AppIcon(asset: IconProvider.freque.buildImageUrl()),
-                    const Gap(4),
-                    Text("Fertilizer:"),
-                    const Gap(12),
-                    AppButton(
-                      text: fertilizer ?? 'Type',
-                      style: ButtonColors.green,
-                      onPressed: () {
-                        addStatusPopup(
-                          context,
-                          fertilizers.map((e) => e.fertilizer).toList(),
-                          (id) {
-                            setState(() {
-                              fertilizer = fertilizers[id].fertilizer;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                const Gap(12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (isEdit)
-                      AnimatedButton(
-                        child: AppIcon(asset: IconProvider.bug.buildImageUrl()),
-                        onPressed: () {
-                          addBugPopup(context);
-                        },
-                      ),
-                    AnimatedButton(
-                      child: AppIcon(asset: sunlight ?? light.first),
-                      onPressed: () {
-                        setState(() {
-                          sunlight = light[
-                              light.indexOf(sunlight ?? light.first) +
-                                  1 % light.length];
-                        });
-                      },
-                    ),
-                    AnimatedButton(
-                      child: Row(
-                        children: [
-                          AppIcon(asset: IconProvider.list.buildImageUrl()),
-                          Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              color: foliage ?? Colors.transparent,
-                              shape: BoxShape.circle,
-                              border: Border.all(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        addColorPopup(
-                          context,
-                          leafColors,
-                          (id) {
-                            setState(() {
-                              foliage = leafColors[id];
-                            });
-                          },
-                        );
-                      },
-                    ),
-                    AnimatedButton(
-                      child: Row(
-                        children: [
-                          AppIcon(asset: IconProvider.heart.buildImageUrl()),
-                          Text("$health %"),
-                        ],
-                      ),
-                      onPressed: () {
-                        addPersentPopup(
-                          context,
-                          health ?? 0,
-                          (id) {
-                            setState(() {
-                              health = id.toDouble();
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                const Gap(12),
-                if (error.isNotEmpty)
-                  Text(
-                    error,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                const Gap(12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (isEdit)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Growth:"),
+                      const Gap(12),
                       AppButton(
-                        text: 'Delete',
-                        style: ButtonColors.red,
+                        text: growthStage?.toString() ?? '0',
+                        style: ButtonColors.green,
                         onPressed: () {
-                          delete(
-                            state.trees.firstWhere(
-                              (element) => element.id == widget.id,
-                            ),
+                          addPersentPopup(context, growthStage ?? 0, (id) {
+                            setState(() {
+                              growthStage = id.toDouble();
+                            });
+                          });
+                        },
+                      ),
+                      const Gap(12),
+                      Text("%"),
+                    ],
+                  ),
+                  TextFieldRow(
+                    controller: height,
+                    prefix: 'Height',
+                    postfix: 'ft',
+                  ),
+                  TextFieldRow(
+                    controller: diameter,
+                    prefix: 'Diameter',
+                    postfix: 'inch',
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon(
+                        asset: IconProvider.soil.buildImageUrl(),
+                        height: 100,
+                      ),
+                      const Gap(4),
+                      Text("Soil:"),
+                      const Gap(12),
+                      AppButton(
+                        text: soil ?? 'Type',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          addStatusPopup(
+                            context,
+                            soils,
+                            (id) {
+                              setState(() {
+                                soil = soils[id];
+                              });
+                            },
                           );
                         },
                       ),
-                    const Gap(12),
-                    AppButton(
-                      text: 'Save',
-                      style: ButtonColors.green,
-                      onPressed: () {
-                        save(
-                          isEdit
-                              ? state.trees.firstWhere(
-                                  (element) => element.id == widget.id,
-                                )
-                              : null,
-                        );
-                      },
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Humidity:"),
+                      const Gap(12),
+                      AppButton(
+                        text: moisture?.toString() ?? '0',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          addPersentPopup(context, moisture ?? 0, (id) {
+                            setState(() {
+                              moisture = id.toDouble();
+                            });
+                          });
+                        },
+                      ),
+                      const Gap(12),
+                      Text("%"),
+                    ],
+                  ),
+                  TextFieldRow(
+                    controller: acidity,
+                    prefix: 'Acidity',
+                    postfix: 'pH',
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon(
+                        asset: IconProvider.protected.buildImageUrl(),
+                        height: 100,
+                      ),
+                      const Gap(4),
+                      Text("Protection:"),
+                      const Gap(12),
+                      AppButton(
+                        text: protection ?? 'Type',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          addStatusPopup(
+                            context,
+                            protections,
+                            (id) {
+                              setState(() {
+                                protection = protections[id];
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon(
+                        asset: IconProvider.freque.buildImageUrl(),
+                        height: 100,
+                      ),
+                      const Gap(4),
+                      Text("Fertilizer:"),
+                      const Gap(12),
+                      AppButton(
+                        text: fertilizer ?? 'Type',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          addStatusPopup(
+                            context,
+                            fertilizers.map((e) => e.fertilizer).toList(),
+                            (id) {
+                              setState(() {
+                                fertilizer = fertilizers[id].fertilizer;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const Gap(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (isEdit)
+                        AnimatedButton(
+                          child: AppIcon(
+                            asset: IconProvider.bug.buildImageUrl(),
+                            height: 85,
+                          ),
+                          onPressed: () {
+                            addBugPopup(context);
+                          },
+                        ),
+                      AnimatedButton(
+                        child: AppIcon(
+                          asset: sunlight ?? light.first,
+                          height: 60,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (sunlight == light.last) {
+                              sunlight = light.first;
+                            } else
+                              sunlight = light[
+                                  light.indexOf(sunlight ?? light.first) + 1];
+                          });
+                        },
+                      ),
+                      AnimatedButton(
+                        child: Row(
+                          children: [
+                            AppIcon(
+                              asset: IconProvider.list.buildImageUrl(),
+                              height: 60,
+                            ),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                color: foliage ?? Colors.transparent,
+                                shape: BoxShape.circle,
+                                border: Border.all(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          addColorPopup(
+                            context,
+                            leafColors,
+                            (id) {
+                              setState(() {
+                                foliage = leafColors[id];
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      AnimatedButton(
+                        child: Row(
+                          children: [
+                            AppIcon(
+                              asset: IconProvider.heart.buildImageUrl(),
+                              height: 60,
+                            ),
+                            Text("${health?.toString() ?? 0} %"),
+                          ],
+                        ),
+                        onPressed: () {
+                          addPersentPopup(
+                            context,
+                            health ?? 0,
+                            (id) {
+                              setState(() {
+                                health = id.toDouble();
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const Gap(12),
+                  if (error.isNotEmpty)
+                    Text(
+                      error,
+                      style: const TextStyle(color: Colors.red),
                     ),
-                  ],
-                ),
-              ],
+                  const Gap(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (isEdit)
+                        AppButton(
+                          text: 'Delete',
+                          style: ButtonColors.red,
+                          onPressed: () {
+                            delete(
+                              state.trees.firstWhere(
+                                (element) => element.id == widget.id,
+                              ),
+                            );
+                          },
+                        ),
+                      const Gap(12),
+                      AppButton(
+                        text: 'Save',
+                        style: ButtonColors.green,
+                        onPressed: () {
+                          save(
+                            isEdit
+                                ? state.trees.firstWhere(
+                                    (element) => element.id == widget.id,
+                                  )
+                                : null,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -469,12 +503,6 @@ class _EditScreenState extends State<EditScreen> {
   void addColorPopup(BuildContext context, List list, Function(int) submit) {
     int selectedItem = 0;
     Color selectedColor = foliage ?? leafColors[0];
-    void onSelectedItemChanged(int index) {
-      setState(() {
-        selectedItem = index;
-        selectedColor = leafColors[index];
-      });
-    }
 
     showDialog(
       context: context,
@@ -488,71 +516,81 @@ class _EditScreenState extends State<EditScreen> {
             backgroundColor: Colors.transparent,
             child: StatefulBuilder(
               builder: (context, StateSetter setState) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
-                child: BackContainer(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: selectedColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Expanded(
-                        child: GridView.builder(
-                          padding: EdgeInsets.all(10),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 10,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
-                          ),
-                          itemCount: leafColors.length,
-                          itemBuilder: (context, index) {
-                            return AnimatedButton(
-                              onPressed: () {
-                                onSelectedItemChanged(index);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: leafColors[index],
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: selectedColor == leafColors[index]
-                                        ? 3
-                                        : 1,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Row(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: SizedBox(
+                  height: 600,
+                  child: BackContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppButton(
-                            text: 'Cancel',
-                            style: ButtonColors.red,
-                            onPressed: () {
-                              context.pop();
-                            },
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: selectedColor,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                          AppButton(
-                            text: 'Save',
-                            style: ButtonColors.green,
-                            onPressed: () {
-                              submit(selectedItem);
-                              context.pop();
-                            },
+                          SizedBox(height: 20),
+                          Expanded(
+                            child: GridView.builder(
+                              padding: EdgeInsets.all(10),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 10,
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
+                              ),
+                              itemCount: leafColors.length,
+                              itemBuilder: (context, index) {
+                                return AnimatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedItem = index;
+                                      selectedColor = leafColors[index];
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: leafColors[index],
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: selectedColor == leafColors[index]
+                                            ? 3
+                                            : 1,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 12,
+                            children: [
+                              AppButton(
+                                text: 'Cancel',
+                                style: ButtonColors.red,
+                                onPressed: () {
+                                  context.pop();
+                                },
+                              ),
+                              AppButton(
+                                text: 'Save',
+                                style: ButtonColors.green,
+                                onPressed: () {
+                                  submit(selectedItem);
+                                  context.pop();
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -570,12 +608,6 @@ class _EditScreenState extends State<EditScreen> {
   ) {
     int values = value.toInt();
 
-    void onSelectedItemChanged(double index) {
-      setState(() {
-        values = index.toInt();
-      });
-    }
-
     showDialog(
       context: context,
       useSafeArea: false,
@@ -588,39 +620,53 @@ class _EditScreenState extends State<EditScreen> {
             backgroundColor: Colors.transparent,
             child: StatefulBuilder(
               builder: (context, StateSetter setState) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
-                child: BackContainer(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(values.toString(), style: TextStyle(fontSize: 50)),
-                      SizedBox(height: 20),
-                      Slider(
-                        value: value,
-                        max: 100,
-                        onChanged: onSelectedItemChanged,
-                      ),
-                      Row(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SizedBox(
+                  height: 250,
+                  child: BackContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppButton(
-                            text: 'Cancel',
-                            style: ButtonColors.red,
-                            onPressed: () {
-                              context.pop();
-                            },
+                          Text(values.toString(),
+                              style:
+                                  TextStyle(fontSize: 65, fontFamily: "Font")),
+                          SizedBox(height: 10),
+                          Slider(
+                            value: value,
+                            max: 100,
+                            onChanged: (id) => setState(
+                              () {
+                                values = id.toInt();
+                                value = id;
+                              },
+                            ),
                           ),
-                          AppButton(
-                            text: 'Save',
-                            style: ButtonColors.green,
-                            onPressed: () {
-                              submit(values);
-                              context.pop();
-                            },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 12,
+                            children: [
+                              AppButton(
+                                text: 'Cancel',
+                                style: ButtonColors.red,
+                                onPressed: () {
+                                  context.pop();
+                                },
+                              ),
+                              AppButton(
+                                text: 'Save',
+                                style: ButtonColors.green,
+                                onPressed: () {
+                                  submit(values);
+                                  context.pop();
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -760,46 +806,68 @@ class _EditScreenState extends State<EditScreen> {
                   const SizedBox(
                     height: 1,
                   ),
-                  BackContainer(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CupertinoPicker.builder(
-                          childCount: list.length,
-                          backgroundColor: Colors.transparent,
-                          scrollController: FixedExtentScrollController(
-                            initialItem: selectedItem,
-                          ),
-                          itemExtent: 35,
-                          onSelectedItemChanged: onSelectedItemChanged,
-                          itemBuilder: (context, index) {
-                            return Center(
-                              child: Text(
-                                list[index] as String,
-                              ),
-                            );
-                          },
-                        ),
-                        Row(
+                  SizedBox(
+                    height: 350,
+                    child: BackContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AppButton(
-                              text: 'Cancel',
-                              style: ButtonColors.red,
-                              onPressed: () {
-                                context.pop();
-                              },
+                            SizedBox(
+                              height: 250,
+                              child: CupertinoPicker.builder(
+                                childCount: list.length,
+                                backgroundColor: Colors.transparent,
+                                scrollController: FixedExtentScrollController(
+                                  initialItem: selectedItem,
+                                ),
+                                itemExtent: 45,
+                                onSelectedItemChanged: onSelectedItemChanged,
+                                itemBuilder: (context, index) {
+                                  return Center(
+                                    child: Text(
+                                      list[index] is TreeType
+                                          ? (list[index] as TreeType).type
+                                          : list[index] is TreeSubtype
+                                              ? (list[index] as TreeSubtype)
+                                                  .subtype
+                                              : list[index] as String,
+                                      style: TextStyle(
+                                        color: Color(0xFF280035),
+                                        fontSize: 32,
+                                        fontFamily: 'Font',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                            AppButton(
-                              text: 'Save',
-                              style: ButtonColors.green,
-                              onPressed: () {
-                                submit(selectedItem);
-                                context.pop();
-                              },
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              spacing: 12,
+                              children: [
+                                AppButton(
+                                  text: 'Cancel',
+                                  style: ButtonColors.red,
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                ),
+                                AppButton(
+                                  text: 'Save',
+                                  style: ButtonColors.green,
+                                  onPressed: () {
+                                    submit(selectedItem);
+                                    context.pop();
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -827,6 +895,7 @@ class TextFieldRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       spacing: 15,
       children: [
         Text(prefix),

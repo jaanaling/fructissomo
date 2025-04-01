@@ -4,7 +4,7 @@ import '../../../core/utils/json_loader.dart';
 import '../model/tree.dart';
 
 class Repository {
-  final String tree = 'tree';
+  final String tree = 'trees';
   final String treep = 'treep';
   final String article = 'article';
 

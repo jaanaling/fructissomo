@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fructissimo/src/core/utils/size_utils.dart';
 import 'package:fructissimo/ui_kit/app_button.dart';
 
 class AppTextField extends StatelessWidget {
@@ -7,7 +8,7 @@ class AppTextField extends StatelessWidget {
     super.key,
     required this.controller,
     this.keyboardType = TextInputType.number,
-    this.maxLines,
+
     this.flex = 0,
     this.width = 75,
     this.verticalPadding = 6,
@@ -16,7 +17,7 @@ class AppTextField extends StatelessWidget {
 
   final TextEditingController? controller;
   final TextInputType? keyboardType;
-  final int? maxLines;
+
   final int flex;
   final double width;
   final double verticalPadding;
@@ -24,33 +25,31 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AppButton(style: ButtonColors.green, text: '',),
-        Expanded(
-          flex: flex,
-          child: SizedBox(
-            width: width,
-            child: CupertinoTextField(
-              controller: controller,
-              keyboardType: keyboardType,
-              onChanged: onChanged,
-              onTapOutside: (event) {
-                FocusScope.of(context).unfocus();
-              },
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-              ),
-              maxLines: maxLines,
-              textAlign: TextAlign.center,
-              padding: EdgeInsets.symmetric(
-                vertical: verticalPadding,
-              ),
+    return SizedBox(
+      width: getWidth(context, percent: 0.2),
+      child: Stack(
+        children: [
+          SizedBox(      width: getWidth(context, percent: 0.2),child: AppButton(style: ButtonColors.green, text: '',)),
+          CupertinoTextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            onChanged: onChanged,
+            onTapOutside: (event) {
+              FocusScope.of(context).unfocus();
+            },
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 25,
             ),
+       
+            textAlign: TextAlign.center,
+            padding: EdgeInsets.symmetric(
+              vertical: verticalPadding,
+            ),
+            decoration: BoxDecoration(color: Colors.transparent),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

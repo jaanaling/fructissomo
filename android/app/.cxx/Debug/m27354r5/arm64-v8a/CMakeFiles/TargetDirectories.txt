@@ -1,0 +1,2 @@
+D:/fructissomo/android/app/.cxx/Debug/m27354r5/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/fructissomo/android/app/.cxx/Debug/m27354r5/arm64-v8a/CMakeFiles/rebuild_cache.dir
