@@ -21,8 +21,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.17
-  share_plus: ^10.1.4
-  image_picker: ^1.1.2
   syncfusion_flutter_charts: ^29.1.35
   
 

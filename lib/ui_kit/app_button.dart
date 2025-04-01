@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fructissimo/src/core/utils/icon_provider.dart';
-import 'package:fructissimo/src/core/utils/size_utils.dart';
 import 'package:fructissimo/src/core/utils/animated_button.dart';
-import 'package:fructissimo/src/core/utils/text_with_border.dart';
-import 'package:fructissimo/ui_kit/inner_shadow.dart';
+
 
 class AppButton extends StatelessWidget {
   final ButtonColors style;
@@ -37,9 +34,7 @@ class AppButton extends StatelessWidget {
           color: Color(0xFF0C4407),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 2),
-          child: InnerShadow(
-            offset: Offset(5, 5),
+            padding: const EdgeInsets.only(bottom: 2),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
@@ -72,8 +67,7 @@ class AppButton extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
