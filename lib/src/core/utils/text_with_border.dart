@@ -15,7 +15,7 @@ class TextWithBorder extends StatelessWidget {
     this.text, {
     super.key,
     this.borderColor,
-    this.fontSize,
+    this.fontSize = 35,
     this.letterSpacing,
     this.textAlign,
     this.fontFamily,
@@ -35,11 +35,11 @@ class TextWithBorder extends StatelessWidget {
             fontSize: fontSize,
             fontWeight: FontWeight.w400,
             letterSpacing: letterSpacing,
-            fontFamily: fontFamily ?? 'Font',
+            fontFamily: fontFamily ?? 'CHIBOLD',
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 4
-              ..color = borderColor ?? const Color(0xFFA25511),
+              ..strokeWidth = 5
+              ..color = borderColor ?? const Color(0xFF4F3D09),
           ),
         ),
         Text(
@@ -50,7 +50,7 @@ class TextWithBorder extends StatelessWidget {
             fontSize: fontSize,
             fontWeight: FontWeight.w400,
             letterSpacing: letterSpacing,
-            fontFamily: fontFamily ?? 'Font',
+            fontFamily: fontFamily ?? 'CHIBOLD',
             color: color ?? Colors.white,
           ),
         ),
