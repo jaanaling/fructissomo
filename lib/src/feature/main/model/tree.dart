@@ -128,7 +128,7 @@ class TreeProfile {
   double diameter;
   double moisture;
   double acidity;
-
+  double temperature;
   String protection;
   Fertilizer fertilizer;
   String soil;
@@ -161,6 +161,7 @@ class TreeProfile {
     required this.moisture,
     required this.acidity,
     required this.protection,
+    required this.temperature,
     required this.fertilizer,
     required this.soil,
     required this.sunlight,
@@ -197,6 +198,7 @@ class TreeProfile {
     String? sunlight,
     Color? foliage,
     double? health,
+    double? temperature,
     double? productivity,
     double? growthStage,
     bool? isCheckWater,
@@ -219,6 +221,7 @@ class TreeProfile {
       subtype: subtype ?? this.subtype,
       height: height ?? this.height,
       diameter: diameter ?? this.diameter,
+      temperature: temperature ?? this.temperature,
       moisture: moisture ?? this.moisture,
       acidity: acidity ?? this.acidity,
       protection: protection ?? this.protection,
@@ -255,10 +258,12 @@ class TreeProfile {
       'moisture': moisture,
       'acidity': acidity,
       'protection': protection,
+      'temperature': temperature,
       'fertilizer': fertilizer.toMap(),
       'soil': soil,
       'sunlight': sunlight,
       'foliage': foliage.value,
+      
       'health': health,
       'productivity': productivity,
       'growthStage': growthStage,
@@ -292,6 +297,7 @@ class TreeProfile {
       fertilizer: Fertilizer.fromMap(map['fertilizer'] as Map<String, dynamic>),
       soil: map['soil'] as String,
       sunlight: map['sunlight'] as String,
+      temperature: map['temperature'] as double,
       foliage: Color(map['foliage'] as int),
       health: map['health'] as double,
       productivity: map['productivity'] as double,
@@ -357,6 +363,7 @@ class TreeProfile {
     return other.id == id &&
         other.type == type &&
         other.subtype == subtype &&
+        other.temperature == temperature &&
         other.height == height &&
         other.diameter == diameter &&
         other.moisture == moisture &&
@@ -393,6 +400,7 @@ class TreeProfile {
         diameter.hashCode ^
         moisture.hashCode ^
         acidity.hashCode ^
+        temperature.hashCode ^
         protection.hashCode ^
         fertilizer.hashCode ^
         soil.hashCode ^

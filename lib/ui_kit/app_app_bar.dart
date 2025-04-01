@@ -20,13 +20,27 @@ class AppAppBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 17),
         child: Row(
           children: [
-            AnimatedButton(
-                onPressed: () => context.pop(),
-                child: AppIcon(
-                  asset: IconProvider.arrow.buildImageUrl(),
-                  height: 60,
-                  width: 60,
-                )),
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Transform.rotate(
+                  angle: 180 * 3.14 / 180,
+                  child: AnimatedButton(
+                      onPressed: () => context.pop(),
+                      child: AppIcon(
+                        asset: IconProvider.arrow.buildImageUrl(),
+                        height: 60,
+                        width: 60,
+                      )),
+                ),
+              ),
+            ),
             Spacer(),
             if (title != null)
               Expanded(

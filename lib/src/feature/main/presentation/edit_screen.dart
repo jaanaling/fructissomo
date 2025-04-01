@@ -43,7 +43,7 @@ class _EditScreenState extends State<EditScreen> {
   TextEditingController diameter = TextEditingController();
   double? moisture;
   TextEditingController acidity = TextEditingController();
-  double? health;
+  double? health = 0;
   double? growthStage;
 
   String? type;
@@ -51,7 +51,7 @@ class _EditScreenState extends State<EditScreen> {
   String? protection;
   String? fertilizer;
   String? soil;
-  String? sunlight;
+  String? sunlight = light.first;
   Color? foliage;
 
   List<Pest> pests = [];
@@ -61,6 +61,7 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
+    foliage = leafColors.first;
     if (widget.id != null) {
       isEdit = true;
     }
@@ -108,308 +109,317 @@ class _EditScreenState extends State<EditScreen> {
 
         return SingleChildScrollView(
           child: SafeArea(
-            child: BackContainer(
-              child: Column(
-                spacing: 7,
-                children: [
-                  AppAppBar(
-                    title: isEdit ? 'Edit' : 'Create',
-                  ),
-                  const Gap(12),
-                  if (!isEdit)
-                    AppButton(
-                      text: type ?? 'Type',
-                      style: ButtonColors.green,
-                      onPressed: () {
-                        addStatusPopup(
-                          context,
-                          treesTypes,
-                          (id) {
-                            setState(() {
-                              type = treesTypes[id].type;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  if (!isEdit)
-                    AppButton(
-                      text: subtype ?? 'Subtype',
-                      style: ButtonColors.green,
-                      onPressed: () {
-                        if (type == null) {
-                          showCupertinoSnackBar(context, 'Select type first');
-                          return;
-                        }
-                        addStatusPopup(
-                          context,
-                          treesSubtypes,
-                          (id) {
-                            setState(() {
-                              subtype = treesSubtypes[id].subtype;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: BackContainer(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  child: Column(
+                    spacing: 7,
                     children: [
-                      Text("Growth:"),
-                      const Gap(12),
-                      AppButton(
-                        text: growthStage?.toString() ?? '0',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          addPersentPopup(context, growthStage ?? 0, (id) {
-                            setState(() {
-                              growthStage = id.toDouble();
-                            });
-                          });
-                        },
+                      AppAppBar(
+                        title: isEdit ? 'Edit' : 'Create',
                       ),
                       const Gap(12),
-                      Text("%"),
-                    ],
-                  ),
-                  TextFieldRow(
-                    controller: height,
-                    prefix: 'Height',
-                    postfix: 'ft',
-                  ),
-                  TextFieldRow(
-                    controller: diameter,
-                    prefix: 'Diameter',
-                    postfix: 'inch',
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppIcon(
-                        asset: IconProvider.soil.buildImageUrl(),
-                        height: 100,
-                      ),
-                      const Gap(4),
-                      Text("Soil:"),
-                      const Gap(12),
-                      AppButton(
-                        text: soil ?? 'Type',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          addStatusPopup(
-                            context,
-                            soils,
-                            (id) {
-                              setState(() {
-                                soil = soils[id];
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Humidity:"),
-                      const Gap(12),
-                      AppButton(
-                        text: moisture?.toString() ?? '0',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          addPersentPopup(context, moisture ?? 0, (id) {
-                            setState(() {
-                              moisture = id.toDouble();
-                            });
-                          });
-                        },
-                      ),
-                      const Gap(12),
-                      Text("%"),
-                    ],
-                  ),
-                  TextFieldRow(
-                    controller: acidity,
-                    prefix: 'Acidity',
-                    postfix: 'pH',
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppIcon(
-                        asset: IconProvider.protected.buildImageUrl(),
-                        height: 100,
-                      ),
-                      const Gap(4),
-                      Text("Protection:"),
-                      const Gap(12),
-                      AppButton(
-                        text: protection ?? 'Type',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          addStatusPopup(
-                            context,
-                            protections,
-                            (id) {
-                              setState(() {
-                                protection = protections[id];
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppIcon(
-                        asset: IconProvider.freque.buildImageUrl(),
-                        height: 100,
-                      ),
-                      const Gap(4),
-                      Text("Fertilizer:"),
-                      const Gap(12),
-                      AppButton(
-                        text: fertilizer ?? 'Type',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          addStatusPopup(
-                            context,
-                            fertilizers.map((e) => e.fertilizer).toList(),
-                            (id) {
-                              setState(() {
-                                fertilizer = fertilizers[id].fertilizer;
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const Gap(12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      if (isEdit)
-                        AnimatedButton(
-                          child: AppIcon(
-                            asset: IconProvider.bug.buildImageUrl(),
-                            height: 85,
-                          ),
-                          onPressed: () {
-                            addBugPopup(context);
-                          },
-                        ),
-                      AnimatedButton(
-                        child: AppIcon(
-                          asset: sunlight ?? light.first,
-                          height: 60,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (sunlight == light.last) {
-                              sunlight = light.first;
-                            } else
-                              sunlight = light[
-                                  light.indexOf(sunlight ?? light.first) + 1];
-                          });
-                        },
-                      ),
-                      AnimatedButton(
-                        child: Row(
-                          children: [
-                            AppIcon(
-                              asset: IconProvider.list.buildImageUrl(),
-                              height: 60,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: foliage ?? Colors.transparent,
-                                shape: BoxShape.circle,
-                                border: Border.all(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          addColorPopup(
-                            context,
-                            leafColors,
-                            (id) {
-                              setState(() {
-                                foliage = leafColors[id];
-                              });
-                            },
-                          );
-                        },
-                      ),
-                      AnimatedButton(
-                        child: Row(
-                          children: [
-                            AppIcon(
-                              asset: IconProvider.heart.buildImageUrl(),
-                              height: 60,
-                            ),
-                            Text("${health?.toString() ?? 0} %"),
-                          ],
-                        ),
-                        onPressed: () {
-                          addPersentPopup(
-                            context,
-                            health ?? 0,
-                            (id) {
-                              setState(() {
-                                health = id.toDouble();
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const Gap(12),
-                  if (error.isNotEmpty)
-                    Text(
-                      error,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  const Gap(12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (isEdit)
+                      if (!isEdit)
                         AppButton(
-                          text: 'Delete',
-                          style: ButtonColors.red,
+                          text: type ?? 'Type',
+                          style: ButtonColors.green,
                           onPressed: () {
-                            delete(
-                              state.trees.firstWhere(
-                                (element) => element.id == widget.id,
-                              ),
+                            addStatusPopup(
+                              context,
+                              treesTypes,
+                              (id) {
+                                setState(() {
+                                  type = treesTypes[id].type;
+                                });
+                              },
                             );
                           },
                         ),
+                      if (!isEdit)
+                        AppButton(
+                          text: subtype ?? 'Subtype',
+                          style: ButtonColors.green,
+                          onPressed: () {
+                            if (type == null) {
+                              showCupertinoSnackBar(
+                                  context, 'Select type first');
+                              return;
+                            }
+                            addStatusPopup(
+                              context,
+                              treesSubtypes,
+                              (id) {
+                                setState(() {
+                                  subtype = treesSubtypes[id].subtype;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Growth:"),
+                          const Gap(12),
+                          AppButton(
+                            text: growthStage?.toString() ?? '0',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              addPersentPopup(context, growthStage ?? 0, (id) {
+                                setState(() {
+                                  growthStage = id.toDouble();
+                                });
+                              });
+                            },
+                          ),
+                          const Gap(12),
+                          Text("%"),
+                        ],
+                      ),
+                      TextFieldRow(
+                        controller: height,
+                        prefix: 'Height',
+                        postfix: 'ft',
+                      ),
+                      TextFieldRow(
+                        controller: diameter,
+                        prefix: 'Diameter',
+                        postfix: 'inch',
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppIcon(
+                            asset: IconProvider.soil.buildImageUrl(),
+                            height: 100,
+                          ),
+                          const Gap(4),
+                          Text("Soil:"),
+                          const Gap(12),
+                          AppButton(
+                            text: soil ?? 'Type',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              addStatusPopup(
+                                context,
+                                soils,
+                                (id) {
+                                  setState(() {
+                                    soil = soils[id];
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Humidity:"),
+                          const Gap(12),
+                          AppButton(
+                            text: moisture?.toString() ?? '0',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              addPersentPopup(context, moisture ?? 0, (id) {
+                                setState(() {
+                                  moisture = id.toDouble();
+                                });
+                              });
+                            },
+                          ),
+                          const Gap(12),
+                          Text("%"),
+                        ],
+                      ),
+                      TextFieldRow(
+                        controller: acidity,
+                        prefix: 'Acidity',
+                        postfix: 'pH',
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppIcon(
+                            asset: IconProvider.protected.buildImageUrl(),
+                            height: 100,
+                          ),
+                          const Gap(4),
+                          Text("Protection:"),
+                          const Gap(12),
+                          AppButton(
+                            text: protection ?? 'Type',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              addStatusPopup(
+                                context,
+                                protections,
+                                (id) {
+                                  setState(() {
+                                    protection = protections[id];
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppIcon(
+                            asset: IconProvider.freque.buildImageUrl(),
+                            height: 100,
+                          ),
+                          const Gap(4),
+                          Text("Fertilizer:"),
+                          const Gap(12),
+                          AppButton(
+                            text: fertilizer ?? 'Type',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              addStatusPopup(
+                                context,
+                                fertilizers.map((e) => e.fertilizer).toList(),
+                                (id) {
+                                  setState(() {
+                                    fertilizer = fertilizers[id].fertilizer;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                       const Gap(12),
-                      AppButton(
-                        text: 'Save',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          save(
-                            isEdit
-                                ? state.trees.firstWhere(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          if (isEdit)
+                            AnimatedButton(
+                              child: AppIcon(
+                                asset: IconProvider.bug.buildImageUrl(),
+                                height: 85,
+                              ),
+                              onPressed: () {
+                                addBugPopup(context);
+                              },
+                            ),
+                          AnimatedButton(
+                            child: AppIcon(
+                              asset: sunlight ?? light.first,
+                              height: 60,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (sunlight == light.last) {
+                                  sunlight = light.first;
+                                } else
+                                  sunlight = light[
+                                      light.indexOf(sunlight ?? light.first) +
+                                          1];
+                              });
+                            },
+                          ),
+                          AnimatedButton(
+                            child: Row(
+                              children: [
+                                AppIcon(
+                                  asset: IconProvider.list.buildImageUrl(),
+                                  height: 60,
+                                ),
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                    color: foliage ?? Colors.transparent,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onPressed: () {
+                              addColorPopup(
+                                context,
+                                leafColors,
+                                (id) {
+                                  setState(() {
+                                    foliage = leafColors[id];
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                          AnimatedButton(
+                            child: Row(
+                              children: [
+                                AppIcon(
+                                  asset: IconProvider.heart.buildImageUrl(),
+                                  height: 60,
+                                ),
+                                Text("${health?.toString() ?? 0} %"),
+                              ],
+                            ),
+                            onPressed: () {
+                              addPersentPopup(
+                                context,
+                                health ?? 0,
+                                (id) {
+                                  setState(() {
+                                    health = id.toDouble();
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      const Gap(12),
+                      if (error.isNotEmpty)
+                        Text(
+                          error,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      const Gap(12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (isEdit)
+                            AppButton(
+                              text: 'Delete',
+                              style: ButtonColors.red,
+                              onPressed: () {
+                                delete(
+                                  state.trees.firstWhere(
                                     (element) => element.id == widget.id,
-                                  )
-                                : null,
-                          );
-                        },
+                                  ),
+                                );
+                              },
+                            ),
+                          const Gap(12),
+                          AppButton(
+                            text: 'Save',
+                            style: ButtonColors.green,
+                            onPressed: () {
+                              save(
+                                isEdit
+                                    ? state.trees.firstWhere(
+                                        (element) => element.id == widget.id,
+                                      )
+                                    : null,
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -463,6 +473,7 @@ class _EditScreenState extends State<EditScreen> {
         id: UniqueKey().toString(),
         type: type!,
         subtype: subtype!,
+        temperature: 96.8,
         height: double.parse(height.text),
         diameter: double.parse(diameter.text),
         moisture: moisture!,
@@ -521,7 +532,8 @@ class _EditScreenState extends State<EditScreen> {
                   height: 600,
                   child: BackContainer(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -557,9 +569,10 @@ class _EditScreenState extends State<EditScreen> {
                                       color: leafColors[index],
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        width: selectedColor == leafColors[index]
-                                            ? 3
-                                            : 1,
+                                        width:
+                                            selectedColor == leafColors[index]
+                                                ? 3
+                                                : 1,
                                       ),
                                     ),
                                   ),
@@ -694,82 +707,85 @@ class _EditScreenState extends State<EditScreen> {
             backgroundColor: Colors.transparent,
             child: StatefulBuilder(
               builder: (context, StateSetter setState) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 100, vertical: 150),
-                child: BackContainer(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          AppTextField(controller: controller),
-                          AppButton(
-                            text: '+',
-                            style: ButtonColors.purple,
-                            onPressed: () {
-                              if (controller.text.isNotEmpty) {
-                                setState(() {
-                                  pests.add(
-                                    Pest(
-                                      id: UniqueKey().toString(),
-                                      name: controller.text,
-                                      date: DateTime.now(),
-                                      isKilled: false,
-                                    ),
-                                  );
-                                  controller.clear();
-                                });
-                              }
+                padding: const EdgeInsets.symmetric(horizontal: 100),
+                child: SizedBox(
+                  height: 250,
+                  child: BackContainer(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            AppTextField(controller: controller),
+                            AppButton(
+                              text: '+',
+                              style: ButtonColors.purple,
+                              onPressed: () {
+                                if (controller.text.isNotEmpty) {
+                                  setState(() {
+                                    pests.add(
+                                      Pest(
+                                        id: UniqueKey().toString(),
+                                        name: controller.text,
+                                        date: DateTime.now(),
+                                        isKilled: false,
+                                      ),
+                                    );
+                                    controller.clear();
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: pests.length,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                children: [
+                                  Text(pests[index].name),
+                                  AppButton(
+                                    text: 'X',
+                                    style: ButtonColors.red,
+                                    onPressed: () {
+                                      setState(() {
+                                        pests.removeAt(index);
+                                      });
+                                    },
+                                  ),
+                                  const Gap(12),
+                                  Text(
+                                    pests[index].date.toString(),
+                                  ),
+                                  AppButton(
+                                    style: pests[index].isKilled
+                                        ? ButtonColors.green
+                                        : ButtonColors.red,
+                                    text: pests[index].isKilled
+                                        ? 'Killed'
+                                        : 'Kill',
+                                    onPressed: () {
+                                      setState(() {
+                                        pests[index].isKilled =
+                                            !pests[index].isKilled;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              );
                             },
                           ),
-                        ],
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: pests.length,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                Text(pests[index].name),
-                                AppButton(
-                                  text: 'X',
-                                  style: ButtonColors.red,
-                                  onPressed: () {
-                                    setState(() {
-                                      pests.removeAt(index);
-                                    });
-                                  },
-                                ),
-                                const Gap(12),
-                                Text(
-                                  pests[index].date.toString(),
-                                ),
-                                AppButton(
-                                  style: pests[index].isKilled
-                                      ? ButtonColors.green
-                                      : ButtonColors.red,
-                                  text:
-                                      pests[index].isKilled ? 'Killed' : 'Kill',
-                                  onPressed: () {
-                                    setState(() {
-                                      pests[index].isKilled =
-                                          !pests[index].isKilled;
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
+                        ),
+                        AppButton(
+                          text: 'OK',
+                          style: ButtonColors.green,
+                          onPressed: () {
+                            context.pop();
                           },
                         ),
-                      ),
-                      AppButton(
-                        text: 'OK',
-                        style: ButtonColors.green,
-                        onPressed: () {
-                          context.pop();
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
