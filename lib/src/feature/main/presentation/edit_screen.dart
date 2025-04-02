@@ -249,16 +249,19 @@ class _EditScreenState extends State<EditScreen> {
                             height: 100,
                           ),
                           const Gap(4),
-                          Text("Protection:", style: TextStyle(fontSize: 20),),
+                          Text(
+                            "Protection:",
+                            style: TextStyle(fontSize: 20),
+                          ),
                           const Gap(12),
                           AppButton(
                             text: protection ?? 'Type',
                             style: ButtonColors.green,
                             padding: fertilizer != null
                                 ? EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 11)
+                                    horizontal: 10, vertical: 11)
                                 : EdgeInsets.symmetric(
-                                vertical: 11.34, horizontal: 24.59),
+                                    vertical: 11.34, horizontal: 24.59),
                             child: protection != null
                                 ? SizedBox(
                                     width: 115,
@@ -305,7 +308,10 @@ class _EditScreenState extends State<EditScreen> {
                             height: 100,
                           ),
                           const Gap(4),
-                          Text("Fertilizer:", style: TextStyle(fontSize: 23),),
+                          Text(
+                            "Fertilizer:",
+                            style: TextStyle(fontSize: 23),
+                          ),
                           const Gap(12),
                           AppButton(
                             text: fertilizer ?? 'Type',
@@ -759,97 +765,136 @@ class _EditScreenState extends State<EditScreen> {
       barrierDismissible: false,
       builder: (context) {
         return MediaQuery(
-          data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
-          child: Dialog(
-            insetPadding: EdgeInsets.zero,
-            backgroundColor: Colors.transparent,
-            child: StatefulBuilder(
-              builder: (context, StateSetter setState) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: SizedBox(
-                  height: 250,
-                  child: BackContainer(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+            data: MediaQuery.of(context).removeViewInsets(removeBottom: true),
+            child: Dialog(
+              insetPadding: EdgeInsets.zero,
+              backgroundColor: Colors.transparent,
+              child: StatefulBuilder(
+                builder: (context, StateSetter setState) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    height: 450,
+                    child: BackContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AppTextField(controller: controller),
-                            AppButton(
-                              text: '+',
-                              style: ButtonColors.purple,
-                              onPressed: () {
-                                if (controller.text.isNotEmpty) {
-                                  setState(() {
-                                    pests.add(
-                                      Pest(
-                                        id: UniqueKey().toString(),
-                                        name: controller.text,
-                                        date: DateTime.now(),
-                                        isKilled: false,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppTextField(
+                                  controller: controller,
+                                  width: 0.5,
+                                ),
+                                Gap(16),
+                                AppButton(
+                                  child: AppIcon(
+                                    asset: IconProvider.plus.buildImageUrl(),
+                                    width: 32,
+                                    height: 32,
+                                  ),
+                                  text: "",
+                                  style: ButtonColors.purple,
+                                  onPressed: () {
+                                    if (controller.text.isNotEmpty) {
+                                      setState(() {
+                                        final pest = Pest(
+                                          id: UniqueKey().toString(),
+                                          name: controller.text,
+                                          date: DateTime.now(),
+                                          isKilled: false,
+                                        );
+                                        pests.add(pest);
+
+                                        controller.clear();
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                            Gap(16),
+                            Expanded(
+                              child: ListView.builder(
+                                padding: EdgeInsets.symmetric(horizontal: 32),
+                                itemCount: pests.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            pests[index].name,
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: "Font"),
+                                          ),
+                                          Gap(16),
+                                          AppButton(
+                                            fontSize: 12,
+                                            text: 'X',
+                                            style: ButtonColors.red,
+                                            onPressed: () {
+                                              setState(() {
+                                                pests.removeAt(index);
+                                              });
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                    controller.clear();
-                                  });
-                                }
+                                      const Gap(4),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            pests[index]
+                                                .date
+                                                .toString()
+                                                .substring(0, 10),
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: "Font"),
+                                          ),
+                                          Gap(16),
+                                          AppButton(
+                                            style: pests[index].isKilled
+                                                ? ButtonColors.green
+                                                : ButtonColors.red,
+                                            text: pests[index].isKilled
+                                                ? 'Killed'
+                                                : 'Kill',
+                                            fontSize: 12,
+                                            onPressed: () {
+                                              setState(() {
+                                                pests[index].isKilled =
+                                                    !pests[index].isKilled;
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Gap(16),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                            AppButton(
+                              text: 'OK',
+                              style: ButtonColors.green,
+                              onPressed: () {
+                                context.pop();
                               },
                             ),
                           ],
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: pests.length,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                children: [
-                                  Text(pests[index].name),
-                                  AppButton(
-                                    text: 'X',
-                                    style: ButtonColors.red,
-                                    onPressed: () {
-                                      setState(() {
-                                        pests.removeAt(index);
-                                      });
-                                    },
-                                  ),
-                                  const Gap(12),
-                                  Text(
-                                    pests[index].date.toString(),
-                                  ),
-                                  AppButton(
-                                    style: pests[index].isKilled
-                                        ? ButtonColors.green
-                                        : ButtonColors.red,
-                                    text: pests[index].isKilled
-                                        ? 'Killed'
-                                        : 'Kill',
-                                    onPressed: () {
-                                      setState(() {
-                                        pests[index].isKilled =
-                                            !pests[index].isKilled;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                        AppButton(
-                          text: 'OK',
-                          style: ButtonColors.green,
-                          onPressed: () {
-                            context.pop();
-                          },
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        );
+            ));
       },
     );
   }

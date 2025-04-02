@@ -49,17 +49,22 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         Positioned(
-          right: isIpad(context) ? null : -122,
-          bottom: getHeight(context, baseSize: 90),
+          top: getHeight(context, baseSize: 90),
           child: AppIcon(
             asset: IconProvider.logo.buildImageUrl(),
-            width: 465,
+            width: getWidth(context,baseSize: 300),
             fit: BoxFit.fitWidth,
           ),
         ),
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 50),
-            child: CupertinoActivityIndicator(color: Colors.white)),
+          Positioned(
+          bottom: getHeight(context, baseSize: 90),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 50),
+              child: CupertinoActivityIndicator(
+                color: Colors.white,
+                radius: 60,
+              )),
+        ),
       ],
     );
   }

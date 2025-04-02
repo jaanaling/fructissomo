@@ -38,7 +38,7 @@ class _CupertinoSnackBar extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.8,
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         decoration: BoxDecoration(
-          color: Colors.pink.withOpacity(0.9),
+          color: const Color(0xCFFFE396),
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Text(

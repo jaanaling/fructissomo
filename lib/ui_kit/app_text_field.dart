@@ -7,7 +7,7 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     required this.controller,
-    this.width = 75,
+    this.width = 0.2,
     this.verticalPadding = 6,
   });
 
@@ -19,12 +19,12 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: getWidth(context, percent: 0.2),
+      width: getWidth(context, percent: width),
       child: Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
-              width: getWidth(context, percent: 0.2),
+              width: getWidth(context, percent: width),
               child: AppButton(
                 style: ButtonColors.green,
                 text: '',

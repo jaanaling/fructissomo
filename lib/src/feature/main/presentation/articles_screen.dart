@@ -29,6 +29,7 @@ class ArticlesScreen extends StatelessWidget {
                 ),
                 ListView.separated(
                   shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: articles.articles.length,
                   separatorBuilder: (context, index) {

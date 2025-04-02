@@ -19,7 +19,7 @@ enum IconProvider {
   sunCloud(imageName: 'sun-cloud.png'),
   thermometer(imageName: 'thermometer.png'),
   water(imageName: 'waterr.png'),
-  watering(imageName: 'watering.png'),
+  watering(imageName: 'wattering.png'),
   logo(imageName: 'logo.png'),
   
   

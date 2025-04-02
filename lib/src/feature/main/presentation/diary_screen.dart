@@ -26,7 +26,7 @@ class DiaryScreen extends StatelessWidget {
                   title: "Diary",
                 ),
                 ListView.separated(
-                  shrinkWrap: true,
+                  shrinkWrap: true,        padding: const EdgeInsets.symmetric(horizontal: 12),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: articles.length,
                   separatorBuilder: (context, index) {
